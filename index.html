@@ -63,12 +63,12 @@
   <!-- TOP BRAND NAVIGATION -->
   <nav class="w-full absolute top-0 left-0 p-6 z-30">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <a href="#" class="flex items-center space-x-3 group">
-        <div class="relative w-10 h-10 rounded-xl overflow-hidden ring-1 ring-mossMint/40 shadow-glow-mint bg-slate-950 flex items-center justify-center transition-transform group-hover:scale-105">
+      <a href="#" class="flex items-center space-x-3.5 group">
+        <div class="relative w-12 h-12 rounded-2xl overflow-hidden ring-2 ring-mossMint/60 shadow-glow-mint bg-slate-950 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:ring-mossMint">
           <img src="assets/img/riomhoideas_logo.jpg" alt="Riomhoideas Logo" class="w-full h-full object-cover">
         </div>
         <div class="flex flex-col">
-          <span class="font-mono font-bold tracking-wider text-white text-lg group-hover:text-mossMint transition-colors">RÍOMHOIDEAS</span>
+          <span class="font-mono font-bold tracking-wider text-white text-xl group-hover:text-mossMint transition-colors">RÍOMHOIDEAS</span>
           <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase">Software Lab</span>
         </div>
       </a>
@@ -86,16 +86,24 @@
   </nav>
 
   <!-- SECTION I: THE LABORATORY HERO -->
-  <header class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden border-b border-slate-800/80 pt-20">
+  <header class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden border-b border-slate-800/80 pt-28 pb-16">
     
     <!-- Dynamic Ambient Background Glows -->
     <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-mossMint/10 rounded-full blur-[130px] pointer-events-none animate-ambient"></div>
     <div class="absolute bottom-10 right-10 w-[350px] h-[350px] bg-cyanGlow/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-    <div class="max-w-4xl text-center z-10">
+    <div class="max-w-4xl text-center z-10 flex flex-col items-center">
       
+      <!-- HERO EMBLEM: Prominent Riomhoideas Brand Logo -->
+      <div class="mb-8 relative group">
+        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-mossMint/40 to-cyanGlow/40 blur-lg opacity-70 group-hover:opacity-100 transition duration-500"></div>
+        <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden ring-2 ring-mossMint/80 shadow-2xl bg-slate-950 flex items-center justify-center">
+          <img src="assets/img/riomhoideas_logo.jpg" alt="Riomhoideas Brand Logo" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105">
+        </div>
+      </div>
+
       <!-- Studio Origin Pill -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-700/60 text-xs font-mono text-mossMint mb-8 shadow-sm">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-700/60 text-xs font-mono text-mossMint mb-6 shadow-sm">
         <span class="inline-block w-2 h-2 rounded-full bg-mossMint"></span>
         Boutique Software Lab • Offline-First Engineering
       </div>
@@ -378,9 +386,11 @@
   <!-- SECTION V: FOOTER -->
   <footer class="w-full py-12 border-t border-slate-800 text-center text-xs text-slate-500 bg-slate-950/60">
     <div class="max-w-7xl mx-auto px-6 flex flex-col items-center space-y-4">
-      <div class="flex items-center space-x-2">
-        <img src="assets/img/riomhoideas_logo.jpg" alt="Riomhoideas" class="w-6 h-6 rounded-md object-cover">
-        <span class="font-mono text-slate-300 font-bold tracking-wider">RÍOMHOIDEAS</span>
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl overflow-hidden ring-1 ring-mossMint/50 shadow-glow-mint bg-slate-950 flex items-center justify-center">
+          <img src="assets/img/riomhoideas_logo.jpg" alt="Riomhoideas" class="w-full h-full object-cover">
+        </div>
+        <span class="font-mono text-slate-200 font-bold tracking-wider text-sm">RÍOMHOIDEAS</span>
       </div>
       <p class="font-mono text-slate-400 text-sm">"Smart software tools, built for simpler days."</p>
       
