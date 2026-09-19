@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Defensive Technical Whitepaper | Riomhoideas</title>
+  <meta name="description" content="Technical Disclosure & Defensive Whitepaper: Adaptive Grid-Mapping and Hardware-Backed Rendering for Local-First Ledger Systems.">
+  <link rel="icon" type="image/jpeg" href="../assets/img/riomhoideas_logo.jpg">
+
+  <!-- Tailwind CSS Core via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            labNavy: '#0A192F',
+            labDark: '#071120',
+            mossMint: '#64FFDA',
+            cyanGlow: '#00E5FF',
+            slateLight: '#CCD6F6',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-labNavy text-slateLight font-sans selection:bg-mossMint selection:text-labNavy antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- NAVIGATION -->
+  <nav class="w-full border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md sticky top-0 z-30 p-4 sm:p-6">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="flex items-center space-x-3 group">
+        <div class="w-8 h-8 rounded-lg overflow-hidden ring-1 ring-mossMint/40 bg-slate-950 flex items-center justify-center">
+          <img src="../assets/img/riomhoideas_logo.jpg" alt="Riomhoideas Logo" class="w-full h-full object-cover">
+        </div>
+        <div class="flex flex-col">
+          <span class="font-mono font-bold tracking-wider text-white text-sm sm:text-base group-hover:text-mossMint transition-colors">RÍOMHOIDEAS</span>
+          <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase">Engineering Disclosure</span>
+        </div>
+      </a>
+
+      <div class="flex items-center space-x-3 text-xs font-mono">
+        <a href="../index.html#suite" class="text-slate-400 hover:text-white transition-colors">← App Suite</a>
+        <span class="text-slate-700">|</span>
+        <a href="pocket-office-privacy.html" class="text-slate-400 hover:text-mossMint transition-colors">Pocket Office Privacy</a>
+        <span class="text-slate-700">|</span>
+        <a href="hously-privacy.html" class="text-slate-400 hover:text-mossMint transition-colors">Hously Privacy</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-4xl mx-auto px-6 py-12 sm:py-16 flex-grow">
+    
+    <!-- Document Header -->
+    <div class="border-b border-slate-800 pb-8 mb-10">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="text-xs font-mono uppercase tracking-widest text-mossMint bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">Defensive Prior Art</span>
+        <span class="text-xs font-mono text-slate-400 bg-slate-900/50 px-2.5 py-1 rounded-full border border-slate-800/80">Amended 2026 Edition</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">Adaptive Grid-Mapping and Hardware-Backed Rendering for Local-First Ledger Systems</h1>
+      <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono text-slate-400 bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+        <div><strong class="text-slate-300">Author:</strong> Riomhoideas Engineering Team</div>
+        <div><strong class="text-slate-300">Original Date:</strong> October 26, 2025</div>
+        <div><strong class="text-slate-300">Revised Date:</strong> April 15, 2026</div>
+        <div class="sm:col-span-3 text-slate-400"><strong class="text-slate-300">Subject Area:</strong> Mobile Graphics, Data Sovereignty, E2EE Document Generation</div>
+      </div>
+    </div>
+
+    <!-- Whitepaper Sections -->
+    <div class="space-y-10 text-slate-300 text-sm leading-relaxed">
+
+      <!-- Abstract -->
+      <section class="bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-mossMint font-mono">1.</span> Abstract
+        </h2>
+        <p>
+          This disclosure details a method for generating high-precision Portable Document Format (PDF) files directly on mobile devices using a deterministic grid-based coordinate system. By mapping UI "blocks" to a native Android Canvas and <code>PdfDocument</code> API within a hardware-backed Secure Enclave environment, this architecture eliminates the need for resource-intensive WebViews and ensures "Local-First" data sovereignty.
+        </p>
+      </section>
+
+      <!-- Problem Statement -->
+      <section class="bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-mossMint font-mono">2.</span> Problem Statement: The WebView Bottleneck
+        </h2>
+        <p class="mb-4">
+          Mobile ERP applications traditionally rely on HTML-to-PDF conversion via hidden WebViews. This creates critical operational and security weaknesses:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">Memory Overhead:</strong>
+            RAM-intensive browser components that frequently cause out-of-memory crashes on resource-constrained mobile hardware in the field.
+          </li>
+          <li>
+            <strong class="text-white block">Privacy & Exfiltration Risks:</strong>
+            Temporary HTML serialization exposes plaintext client, invoice, and banking data to the device's shared file system and app caches.
+          </li>
+          <li>
+            <strong class="text-white block">Visual Inconsistency:</strong>
+            CSS print styles vary unpredictably across different OS versions and browser engines, breaking document conformity under the Irish Consumer Rights Act 2022.
+          </li>
+        </ul>
+      </section>
+
+      <!-- The Innovation -->
+      <section class="bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-mossMint font-mono">3.</span> The Innovation: Synchronous Grid-Mapping (SGM)
+        </h2>
+        <p class="mb-4">
+          Instead of flow-based HTML layout engines, the system treats the physical document as a <strong>Virtual Spatial Matrix</strong> (typically 50 columns by 70 rows).
+        </p>
+
+        <h3 class="text-base font-semibold text-white mt-6 mb-3">3.1. Shared Coordinate Logic (WYSIWYG Enforcement)</h3>
+        <p class="mb-4">
+          The innovation lies in using identical quantization logic for both the Jetpack Compose Drag-and-Drop Editor and the Native Output Engine:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">Snap-to-Grid:</strong>
+            Touch input on the mobile touchscreen is quantized dynamically to the nearest valid grid cell coordinates.
+          </li>
+          <li>
+            <strong class="text-white block">Deterministic Scaling:</strong>
+            The grid scales mathematically to any standard paper format (A4, Letter, Legal) by calculating dynamic cell dimensions (<code>pageWidth / numCols</code>) at the moment of render, completely avoiding text reflow errors.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Security & Sovereignty -->
+      <section class="bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-mossMint font-mono">4.</span> Security & Sovereignty (2026 Compliance)
+        </h2>
+
+        <h3 class="text-base font-semibold text-white mb-2">4.1. The Neutral Conduit Defense</h3>
+        <p class="mb-4">
+          The rendering engine is architected as a "Neutral Conduit." All encryption (AES-256 GCM) is performed End-to-End between the mobile hardware and the user's personal cloud storage (Google Drive):
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800 mb-6">
+          <li>
+            <strong class="text-white block">Key Isolation:</strong>
+            Master encryption keys are generated strictly within the device's hardware Secure Keystore (StrongBox). Riomhoideas never possesses, transmits, or has technical access to these keys.
+          </li>
+        </ul>
+
+        <h3 class="text-base font-semibold text-white mb-2">4.2. Zero-Serialization & No-AI Integrity</h3>
+        <p>
+          This method utilizes a "Zero-Serialization" approach. Because data is drawn directly to the native Canvas API from volatile memory buffers, the system creates no intermediate plaintext cache files that could be harvested by automated LLM scrapers, malware, or third-party AI training bots.
+        </p>
+      </section>
+
+      <!-- Conclusion -->
+      <section class="bg-slate-900/40 border border-slate-800 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-3 flex items-center gap-2">
+          <span class="text-mossMint font-mono">5.</span> Conclusion & Prior Art Assertion
+        </h2>
+        <p>
+          By bypassing the web stack entirely and utilizing a shared coordinate system, the SGM engine achieves ultra-high-performance document generation. This establishes <strong>Prior Art</strong> for grid-based native PDF rendering and hardware-linked data sovereignty, ensuring "Freedom to Operate" for the Riomhoideas software platform.
+        </p>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full py-8 border-t border-slate-800 text-center text-xs text-slate-500 bg-slate-950/60 mt-16">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-2">
+        <img src="../assets/img/riomhoideas_logo.jpg" alt="Riomhoideas" class="w-5 h-5 rounded object-cover">
+        <span class="font-mono text-slate-400">Riomhoideas Software Lab</span>
+      </div>
+      <p class="tracking-wide text-slate-500">© 2026 Riomhoideas. Crafted in County Donegal, Ireland.</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

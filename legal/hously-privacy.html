@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Hously Pro | Riomhoideas</title>
+  <meta name="description" content="Privacy Policy for Hously Pro (ie.hously.pro). Local-first data sovereignty, scoped database provider, forensic audit trails, and zero telemetry.">
+  <link rel="icon" type="image/jpeg" href="../assets/img/riomhoideas_logo.jpg">
+
+  <!-- Tailwind CSS Core via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            labNavy: '#0A192F',
+            labDark: '#071120',
+            mossMint: '#64FFDA',
+            cyanGlow: '#00E5FF',
+            slateLight: '#CCD6F6',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-labNavy text-slateLight font-sans selection:bg-mossMint selection:text-labNavy antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- NAVIGATION -->
+  <nav class="w-full border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md sticky top-0 z-30 p-4 sm:p-6">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="flex items-center space-x-3 group">
+        <div class="w-8 h-8 rounded-lg overflow-hidden ring-1 ring-mossMint/40 bg-slate-950 flex items-center justify-center">
+          <img src="../assets/img/riomhoideas_logo.jpg" alt="Riomhoideas Logo" class="w-full h-full object-cover">
+        </div>
+        <div class="flex flex-col">
+          <span class="font-mono font-bold tracking-wider text-white text-sm sm:text-base group-hover:text-mossMint transition-colors">RÍOMHOIDEAS</span>
+          <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase">Legal & Compliance</span>
+        </div>
+      </a>
+
+      <div class="flex items-center space-x-3 text-xs font-mono">
+        <a href="../index.html#suite" class="text-slate-400 hover:text-white transition-colors">← App Suite</a>
+        <span class="text-slate-700">|</span>
+        <a href="pocket-office-privacy.html" class="text-slate-400 hover:text-mossMint transition-colors">Pocket Office Privacy</a>
+        <span class="text-slate-700">|</span>
+        <a href="defensive-whitepaper.html" class="text-slate-400 hover:text-mossMint transition-colors">Whitepaper</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-4xl mx-auto px-6 py-12 sm:py-16 flex-grow">
+    
+    <!-- Document Header -->
+    <div class="border-b border-slate-800 pb-8 mb-10">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-xs font-mono uppercase tracking-widest text-mossMint bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">Official Policy</span>
+        <span class="text-xs font-mono text-slate-400">Application: <code class="text-slate-300">ie.hously.pro</code></span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Privacy Policy for Hously Pro</h1>
+      <p class="text-xs font-mono text-slate-400 mt-2">Last Updated: April 29, 2026</p>
+    </div>
+
+    <!-- Preamble / Data Sovereignty Callout -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 mb-10 text-slate-300 leading-relaxed text-sm">
+      <p class="mb-3">
+        This Privacy Policy describes how <strong>ie.hously.pro</strong> ("we," "us," or "our") handles your information.
+      </p>
+      <p>
+        Our operations are governed by the fundamental principle of <strong class="text-mossMint">Data Sovereignty</strong>: your estate management data belongs entirely to you, and it remains on your device unless you explicitly choose to move or back it up.
+      </p>
+    </div>
+
+    <!-- Policy Sections -->
+    <div class="space-y-10 text-slate-300 text-sm leading-relaxed">
+
+      <!-- Section 1 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">1.</span> Local-First Architecture (Data Sovereignty)
+        </h2>
+        <p class="mb-4">
+          Hously Pro is engineered on a <strong>"Local-First"</strong> architecture, utilizing a scoped database provider to ensure complete isolation and security:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">No Central Server:</strong>
+            We do not operate a central database that stores or "sees" your financial records, owner lists, or estate documents.
+          </li>
+          <li>
+            <strong class="text-white block">Neutral Conduit:</strong>
+            Hously Pro acts strictly as a technical utility. All forensic audit trails and transaction logs generated within the app are stored locally on your device.
+          </li>
+          <li>
+            <strong class="text-white block">Developer Access:</strong>
+            We do not possess the keys to your data. We cannot view, decrypt, or access your estate records under any circumstances.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">2.</span> App Permissions & Privacy by Design
+        </h2>
+        <p class="mb-4">
+          To ensure maximum security, Hously Pro utilizes Native System Pickers and biometric authentication rather than requesting broad, invasive permissions:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">Contacts:</strong>
+            We do not request broad contact permissions. When adding a property owner or tenant, the app utilizes your device's native contact picker; only the specific contact data you select is imported.
+          </li>
+          <li>
+            <strong class="text-white block">Storage & Biometrics:</strong>
+            We utilize the System Document Picker for exporting professional reports and SEPA files. Access to sensitive financial dashboards is protected by device-level biometric authentication (Fingerprint / Face Unlock).
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">3.</span> Forensic Trust & Audit Integrity
+        </h2>
+        <p class="mb-4">
+          Hously Pro is designed to maintain high-integrity records for professional estate reporting and AGM compliance:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">Audit Logging:</strong>
+            The app automatically generates forensic audit trails for all financial modifications to ensure accountability. This data never leaves your device unless you export a "Professional Accountant Package".
+          </li>
+          <li>
+            <strong class="text-white block">Watermarking:</strong>
+            To protect the integrity of your digital records, exported PDFs include forensic watermarks that verify the source of the report.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">4.</span> Optional Cloud Integration & Limited Use
+        </h2>
+        <p class="mb-4">
+          Hously Pro provides an optional cloud backup feature subject to strict privacy controls:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">Restricted Scope:</strong>
+            The app requests the minimum necessary Google Drive scopes (<code>drive.file</code>), granting access <strong>ONLY</strong> to specific backup files created by Hously Pro.
+          </li>
+          <li>
+            <strong class="text-white block">Direct Transfer:</strong>
+            Data is transmitted directly from your device to your secure cloud storage. It never passes through any intermediary owned by the Developer.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">5.</span> AI Sovereignty & Training Prohibition
+        </h2>
+        <p class="mb-4">
+          Hously Pro is designed for professional estate confidentiality. We enforce strict data protection:
+        </p>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800">
+          <li>
+            <strong class="text-white block">No AI Training:</strong>
+            We do not use, sell, or license any user-generated estate content, ledger data, or financial metadata to train Large Language Models (LLMs) or Generative AI.
+          </li>
+          <li>
+            <strong class="text-white block">Scraping Prohibition:</strong>
+            We expressly prohibit the crawling or scraping of data within the Hously Pro environment for artificial intelligence development.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 6 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">6.</span> Security, Encryption & Statutory Liability
+        </h2>
+        <ul class="space-y-3 pl-4 border-l-2 border-slate-800 mb-6">
+          <li>
+            <strong class="text-white block">Encryption Standard:</strong>
+            Local data is protected using industry-standard authenticated encryption.
+          </li>
+          <li>
+            <strong class="text-white block">Hardware Security:</strong>
+            Master encryption keys are stored within your device's hardware-backed Secure Enclave or Keystore.
+          </li>
+          <li>
+            <strong class="text-white block">Digital Conformity (Ireland):</strong>
+            In compliance with the <strong>Irish Consumer Rights Act 2022</strong>, we commit to providing security updates to maintain digital conformity for at least six (6) years from the date of download.
+          </li>
+        </ul>
+
+        <!-- Warning Callout -->
+        <div class="bg-amber-950/30 border border-amber-800/60 rounded-lg p-4 text-amber-200 text-xs">
+          <strong class="text-amber-400 block mb-1">CRITICAL WARNING:</strong>
+          Because we do not store your data or your keys, <strong>RECOVERY IS TECHNICALLY IMPOSSIBLE</strong> if you lose your device or forget your credentials. You are solely responsible for securing your hardware keys and managing your backups.
+        </div>
+      </section>
+
+      <!-- Section 7 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">7.</span> Diagnostic Logs
+        </h2>
+        <p>
+          Diagnostic logs (crash reports) are never sent automatically. You may choose to manually share technical logs for support; these never include financial records or personal identifiers.
+        </p>
+      </section>
+
+      <!-- Section 8 -->
+      <section class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-6 sm:p-8">
+        <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-mossMint font-mono">8.</span> Contact Us
+        </h2>
+        <p class="mb-4">
+          For privacy inquiries or technical support regarding your data sovereignty, please contact:
+        </p>
+        <div class="font-mono text-xs bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-1">
+          <p><span class="text-slate-400">Developer:</span> <span class="text-white">Riomhoideas</span></p>
+          <p><span class="text-slate-400">Support Email:</span> <a href="mailto:contact@riomhoideas.ie" class="text-mossMint hover:underline">contact@riomhoideas.ie</a> / <a href="mailto:riomhoideas@gmail.com" class="text-mossMint hover:underline">riomhoideas@gmail.com</a></p>
+          <p><span class="text-slate-400">Jurisdiction:</span> <span class="text-white">Donegal, Ireland (GDPR / Irish Data Protection Acts)</span></p>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full py-8 border-t border-slate-800 text-center text-xs text-slate-500 bg-slate-950/60 mt-16">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-2">
+        <img src="../assets/img/riomhoideas_logo.jpg" alt="Riomhoideas" class="w-5 h-5 rounded object-cover">
+        <span class="font-mono text-slate-400">Riomhoideas Software Lab</span>
+      </div>
+      <p class="tracking-wide text-slate-500">© 2026 Riomhoideas. Crafted in County Donegal, Ireland.</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>
