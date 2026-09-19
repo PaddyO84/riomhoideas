@@ -4,8 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riomhoideas | Focused Code. Cleaner Admin.</title>
-  <!-- Tailwind CSS Core Injection Engine via CDN for Rapid Setup -->
+  <title>Riomhoideas | Smarter admin. Zero bloat.</title>
+  <meta name="description" content="An independent Irish software lab crafting lightweight, offline-first mobile utilities for small businesses and residential committees. Fast, private, and 100% data ownership.">
+  <meta name="keywords" content="Riomhoideas, Pocket Office Pro, Hously Pro, Invoicing App, Estate Management, Ireland, Offline-First, Privacy">
+  <meta name="author" content="Riomhoideas">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://riomhoideas.ie/">
+  <meta property="og:title" content="Riomhoideas | Smarter admin. Zero bloat.">
+  <meta property="og:description" content="Independent Irish software lab crafting lightweight, offline-first administrative utilities for mobile pros and residential estates.">
+  <meta property="og:image" content="assets/img/riomhoideas_logo.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Riomhoideas | Smarter admin. Zero bloat.">
+  <meta name="twitter:description" content="Boutique offline-first administrative tools. Pocket Office Pro & Hously Pro.">
+  <meta name="twitter:image" content="assets/img/riomhoideas_logo.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/img/riomhoideas_logo.jpg">
+
+  <!-- Tailwind CSS Core Injection Engine via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,174 +33,360 @@
         extend: {
           colors: {
             labNavy: '#0A192F',
+            labDark: '#071120',
             mossMint: '#64FFDA',
+            cyanGlow: '#00E5FF',
             slateLight: '#CCD6F6',
+          },
+          boxShadow: {
+            'glow-mint': '0 0 25px -5px rgba(100, 255, 218, 0.3)',
+            'glow-card': '0 10px 40px -10px rgba(10, 25, 47, 0.9)',
           }
         }
       }
     }
   </script>
+
+  <style>
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+    .animate-ambient {
+      animation: pulseGlow 8s ease-in-out infinite;
+    }
+  </style>
 </head>
 
-<body class="bg-labNavy text-slateLight font-sans selection:bg-mossMint selection:text-labNavy">
+<body class="bg-labNavy text-slateLight font-sans selection:bg-mossMint selection:text-labNavy antialiased">
 
-  <!-- TOP BRAND NAV ANCHOR -->
-  <nav class="w-full absolute top-0 left-0 p-6 z-20">
+  <!-- TOP BRAND NAVIGATION -->
+  <nav class="w-full absolute top-0 left-0 p-6 z-30">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <span class="font-mono font-bold tracking-wider text-white text-lg">RÍOMHOIDEAS</span>
-      <span
-        class="text-xs font-mono px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400">Boutique
-        Software Lab</span>
+      <a href="#" class="flex items-center space-x-3 group">
+        <div class="relative w-10 h-10 rounded-xl overflow-hidden ring-1 ring-mossMint/40 shadow-glow-mint bg-slate-950 flex items-center justify-center transition-transform group-hover:scale-105">
+          <img src="assets/img/riomhoideas_logo.jpg" alt="Riomhoideas Logo" class="w-full h-full object-cover">
+        </div>
+        <div class="flex flex-col">
+          <span class="font-mono font-bold tracking-wider text-white text-lg group-hover:text-mossMint transition-colors">RÍOMHOIDEAS</span>
+          <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase">Software Lab</span>
+        </div>
+      </a>
+      
+      <div class="flex items-center space-x-3">
+        <span class="hidden sm:inline-flex items-center text-xs font-mono px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-ping"></span>
+          Donegal, Ireland
+        </span>
+        <a href="#suite" class="text-xs font-mono px-3.5 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-mossMint hover:bg-slate-800 hover:border-mossMint transition-all">
+          App Suite ↓
+        </a>
+      </div>
     </div>
   </nav>
 
-  <!-- SECTION I: THE LABORATORY HEADER (HERO PANEL) -->
-  <header
-    class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden border-b border-slate-800">
+  <!-- SECTION I: THE LABORATORY HERO -->
+  <header class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden border-b border-slate-800/80 pt-20">
+    
+    <!-- Dynamic Ambient Background Glows -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-mossMint/10 rounded-full blur-[130px] pointer-events-none animate-ambient"></div>
+    <div class="absolute bottom-10 right-10 w-[350px] h-[350px] bg-cyanGlow/5 rounded-full blur-[100px] pointer-events-none"></div>
+
     <div class="max-w-4xl text-center z-10">
-      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-white">
-        Focused code. <span class="text-mossMint">Cleaner admin.</span>
+      
+      <!-- Studio Origin Pill -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-700/60 text-xs font-mono text-mossMint mb-8 shadow-sm">
+        <span class="inline-block w-2 h-2 rounded-full bg-mossMint"></span>
+        Boutique Software Lab • Offline-First Engineering
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-white leading-tight">
+        Smarter admin. <br class="hidden sm:inline" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-mossMint via-teal-300 to-cyanGlow">
+          Zero bloat.
+        </span>
       </h1>
-      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-        An Irish software development lab crafting lightweight, secure, and mobile-first administrative utilities for
-        small businesses and local estate committees.
+
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+        An independent Irish software studio crafting lightweight, secure, and mobile-first administrative utilities for mobile service professionals and residential estate committees.
       </p>
-      <a href="#suite"
-        class="inline-block bg-transparent border-2 border-mossMint text-mossMint px-8 py-3 rounded font-medium hover:bg-mossMint hover:text-labNavy transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-mossMint focus:ring-offset-2 focus:ring-offset-labNavy">
-        Explore Our Suite
-      </a>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#suite"
+          class="w-full sm:w-auto inline-flex items-center justify-center bg-mossMint text-labNavy font-semibold px-8 py-3.5 rounded-lg hover:bg-teal-300 transition-all duration-300 transform hover:-translate-y-0.5 shadow-glow-mint focus:outline-none focus:ring-2 focus:ring-mossMint focus:ring-offset-2 focus:ring-offset-labNavy">
+          Explore Our Apps
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </a>
+        <a href="#manifest"
+          class="w-full sm:w-auto inline-flex items-center justify-center bg-slate-900/70 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white font-medium px-7 py-3.5 rounded-lg transition-all duration-200">
+          Our Architecture Protocol
+        </a>
+      </div>
+
+      <!-- Trust Badges Under Hero -->
+      <div class="mt-14 pt-8 border-t border-slate-800/60 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+        <div class="px-2">
+          <p class="text-white font-bold text-base font-mono">100%</p>
+          <p class="text-xs text-slate-400">Offline-First</p>
+        </div>
+        <div class="px-2">
+          <p class="text-white font-bold text-base font-mono">Zero</p>
+          <p class="text-xs text-slate-400">Telemetry Bloat</p>
+        </div>
+        <div class="px-2">
+          <p class="text-white font-bold text-base font-mono">Instant</p>
+          <p class="text-xs text-slate-400">On-Site Invoicing</p>
+        </div>
+        <div class="px-2">
+          <p class="text-white font-bold text-base font-mono">Private</p>
+          <p class="text-xs text-slate-400">Local Device DB</p>
+        </div>
+      </div>
     </div>
-    <!-- Visual Engineering Accent Matrix -->
-    <div
-      class="absolute inset-0 opacity-5 pointer-events-none font-mono text-xs flex items-center justify-center select-none">
+
+    <!-- Background Code Accent -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none font-mono text-xs flex items-center justify-center select-none">
       <pre class="text-mossMint">
         func initLab() {
-            let pocketOffice = App(id: "ie.pocketoffice.pro")
-            let hously = App(id: "ie.hously.pro")
+            let pocketOffice = App(id: "ie.pocketoffice.pro", architecture: .offlineFirst)
+            let hously = App(id: "ie.hously.pro", architecture: .offlineFirst)
             deploySecureWorkspace([pocketOffice, hously])
         }
       </pre>
     </div>
   </header>
 
-  <!-- SECTION II: THE PRODUCT MATRIX FUNNEL HUB -->
-  <main id="suite" class="max-w-7xl mx-auto px-6 py-24">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+  <!-- SECTION II: THE PRODUCT MATRIX SUITE -->
+  <main id="suite" class="max-w-7xl mx-auto px-6 py-28">
+    <div class="text-center max-w-2xl mx-auto mb-20">
+      <span class="text-xs font-mono uppercase tracking-widest text-mossMint font-semibold">Purpose-Built Tools</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 mb-4 tracking-tight">Software Designed for the Field</h2>
+      <p class="text-slate-400 text-base leading-relaxed">
+        Eliminate cluttered subscription tools with fast, locally resilient apps built for mobile trades and housing committees.
+      </p>
+    </div>
 
-      <!-- POCKET OFFICE PRO GRID COLUMN -->
-      <section
-        class="flex flex-col bg-slate-900/40 p-8 md:p-10 rounded-xl border border-slate-800 hover:border-slate-700/70 transition-all duration-300">
-        <div class="mb-6">
-          <span class="text-xs font-mono uppercase tracking-widest text-mossMint">Mobile Workspace</span>
-          <h2 class="text-3xl font-bold text-white mt-1 mb-2">Pocket Office Pro</h2>
-          <p class="text-sm font-medium text-slate-400">Streamlined Admin & Invoicing for Mobile Professionals</p>
-        </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-14">
 
-        <!-- Application Screenshot Frame Placeholder -->
-        <div
-          class="w-full h-48 bg-slate-950/80 border border-slate-800 rounded-lg mb-8 flex items-center justify-center text-xs font-mono tracking-wider text-slate-500 relative overflow-hidden">
-          <div class="absolute top-3 left-3 flex space-x-1.5">
-            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
-            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+      <!-- POCKET OFFICE PRO CARD -->
+      <section class="flex flex-col bg-slate-900/50 p-8 sm:p-10 rounded-2xl border border-slate-800 hover:border-slate-700/80 transition-all duration-300 shadow-glow-card relative group">
+        
+        <!-- Header & App Icon -->
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-mossMint font-semibold">Field Operations</span>
+            <h3 class="text-3xl font-extrabold text-white mt-1">Pocket Office Pro</h3>
+            <p class="text-sm font-medium text-slate-400 mt-1">On-site invoicing and client sign-off in seconds.</p>
           </div>
-          [ POCKET OFFICE PRO DASHBOARD INTERFACE CAPTURE ]
+          <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-950 ring-1 ring-slate-700 flex-shrink-0 shadow-md">
+            <img src="assets/img/pocketoffice_icon.png" alt="Pocket Office Pro Icon" class="w-full h-full object-cover">
+          </div>
         </div>
 
-        <p class="text-slate-300 mb-8 leading-relaxed">
-          Engineered for contractors, trades, and mobile service operators who need to manage client documentation,
-          build quotes on-site, and reduce evening paperwork stress.
+        <!-- Interactive Screen Preview Showcase -->
+        <div class="w-full bg-slate-950/90 border border-slate-800/90 rounded-xl p-4 mb-8 relative overflow-hidden shadow-inner">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-2 mb-3">
+            <div class="flex space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span>
+            </div>
+            <span class="text-[11px] font-mono text-slate-500">Android Production Interface</span>
+          </div>
+
+          <!-- Dual Screen Showcase Mockup -->
+          <div class="grid grid-cols-2 gap-3 items-center">
+            <div class="group/screen relative rounded-lg overflow-hidden border border-slate-800 bg-slate-900/60 shadow-md">
+              <img src="assets/img/pocketoffice_preview_1.jpeg" alt="Pocket Office Pro Invoicing Preview" class="w-full h-56 sm:h-64 object-cover object-top transition-transform duration-300 group-hover/screen:scale-105">
+              <div class="absolute bottom-0 inset-x-0 bg-slate-950/80 backdrop-blur-sm p-1.5 text-center">
+                <span class="text-[10px] font-mono text-mossMint">Dashboard & Invoicing</span>
+              </div>
+            </div>
+
+            <div class="group/screen relative rounded-lg overflow-hidden border border-slate-800 bg-slate-900/60 shadow-md">
+              <img src="assets/img/pocketoffice_preview_2.jpeg" alt="Pocket Office Pro Job Management Preview" class="w-full h-56 sm:h-64 object-cover object-top transition-transform duration-300 group-hover/screen:scale-105">
+              <div class="absolute bottom-0 inset-x-0 bg-slate-950/80 backdrop-blur-sm p-1.5 text-center">
+                <span class="text-[10px] font-mono text-mossMint">Job & Client Flow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-slate-300 mb-6 leading-relaxed text-sm">
+          Engineered specifically for contractors, trades, and mobile specialists who need to generate professional estimates, produce clean PDF invoices on the spot, and capture digital signatures before leaving the work site.
         </p>
-        <ul class="space-y-4 mb-12 flex-grow text-sm text-slate-300">
-          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>On-Site
-                Invoicing:</strong> Draft, calculate, and deliver professional, clean invoices instantly upon project
-              completion.</span></li>
-          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Live Client
-                Sign-Off:</strong> Capture secure, on-screen digital signatures directly within the app to verify job
-              confirmation.</span></li>
-          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Financial
-                Snapshots:</strong> Maintain an organized running balance of incoming revenue and unpaid tasks without
-              bloated CRM software.</span></li>
+
+        <ul class="space-y-3.5 mb-10 flex-grow text-sm text-slate-300">
+          <li class="flex items-start">
+            <span class="text-mossMint mr-3 font-bold">✓</span>
+            <span><strong>On-Site Invoicing:</strong> Draft, calculate VAT, and deliver clean PDF invoices straight from the job site.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-mossMint mr-3 font-bold">✓</span>
+            <span><strong>Digital Signature Sign-Off:</strong> Collect secure on-screen client signatures to confirm completed milestones immediately.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-mossMint mr-3 font-bold">✓</span>
+            <span><strong>Offline Reliability:</strong> Create quotes and logs in basements or rural areas without mobile coverage.</span>
+          </li>
         </ul>
-        <a href="https://play.google.com/store/apps/details?id=ie.pocketoffice.pro" target="_blank"
-          class="w-full bg-slate-800 text-center py-3.5 rounded-lg font-semibold text-white hover:bg-mossMint hover:text-labNavy transition-all duration-200 shadow-lg block focus:outline-none focus:ring-2 focus:ring-mossMint">
-          Get it on Google Play
+
+        <!-- Google Play Button -->
+        <a href="https://play.google.com/store/apps/details?id=ie.pocketoffice.pro" target="_blank" rel="noopener noreferrer"
+          class="w-full bg-slate-800 hover:bg-slate-700/90 text-white font-medium py-3 px-4 rounded-xl border border-slate-700 hover:border-mossMint transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg group-hover:border-mossMint/50">
+          <svg class="w-5 h-5 fill-current text-mossMint" viewBox="0 0 24 24">
+            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+          </svg>
+          <div class="text-left">
+            <div class="text-[10px] uppercase font-mono tracking-wider text-slate-400 leading-tight">Get it on</div>
+            <div class="text-sm font-bold text-white leading-tight">Google Play</div>
+          </div>
         </a>
       </section>
 
-      <!-- HOUSLY PRO GRID COLUMN -->
-      <section
-        class="flex flex-col bg-slate-900/40 p-8 md:p-10 rounded-xl border border-slate-800 hover:border-slate-700/70 transition-all duration-300">
-        <div class="mb-6">
-          <span class="text-xs font-mono uppercase tracking-widest text-mossMint">Estate Administration</span>
-          <h2 class="text-3xl font-bold text-white mt-1 mb-2">Hously Pro</h2>
-          <p class="text-sm font-medium text-slate-400">Clear Oversight for Residential Committees & MUDs</p>
-        </div>
-
-        <!-- Application Screenshot Frame Placeholder -->
-        <div
-          class="w-full h-48 bg-slate-950/80 border border-slate-800 rounded-lg mb-8 flex items-center justify-center text-xs font-mono tracking-wider text-slate-500 relative overflow-hidden">
-          <div class="absolute top-3 left-3 flex space-x-1.5">
-            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
-            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+      <!-- HOUSLY PRO CARD -->
+      <section class="flex flex-col bg-slate-900/50 p-8 sm:p-10 rounded-2xl border border-slate-800 hover:border-slate-700/80 transition-all duration-300 shadow-glow-card relative group">
+        
+        <!-- Header & App Icon -->
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-mossMint font-semibold">Residential Property</span>
+            <h3 class="text-3xl font-extrabold text-white mt-1">Hously Pro</h3>
+            <p class="text-sm font-medium text-slate-400 mt-1">Clear oversight for residential committees & MUDs.</p>
           </div>
-          [ HOUSLY PRO MANAGEMENT PORTAL INTERFACE CAPTURE ]
+          <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-950 ring-1 ring-slate-700 flex-shrink-0 shadow-md">
+            <img src="assets/img/hously_icon.jpg" alt="Hously Pro Icon" class="w-full h-full object-cover">
+          </div>
         </div>
 
-        <p class="text-slate-300 mb-8 leading-relaxed">
-          Brings structured accounting clarity, secure document organization, and clean reporting tools to housing
-          estate committees, property factors, and managed districts.
+        <!-- Interactive Screen Preview Showcase -->
+        <div class="w-full bg-slate-950/90 border border-slate-800/90 rounded-xl p-4 mb-8 relative overflow-hidden shadow-inner">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-2 mb-3">
+            <div class="flex space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span>
+            </div>
+            <span class="text-[11px] font-mono text-slate-500">Android Production Interface</span>
+          </div>
+
+          <!-- Dual Screen Showcase Mockup -->
+          <div class="grid grid-cols-2 gap-3 items-center">
+            <div class="group/screen relative rounded-lg overflow-hidden border border-slate-800 bg-slate-900/60 shadow-md">
+              <img src="assets/img/hously_preview_1.png" alt="Hously Pro Estate Management Dashboard" class="w-full h-56 sm:h-64 object-cover object-top transition-transform duration-300 group-hover/screen:scale-105">
+              <div class="absolute bottom-0 inset-x-0 bg-slate-950/80 backdrop-blur-sm p-1.5 text-center">
+                <span class="text-[10px] font-mono text-mossMint">Estate Overview</span>
+              </div>
+            </div>
+
+            <div class="group/screen relative rounded-lg overflow-hidden border border-slate-800 bg-slate-900/60 shadow-md">
+              <img src="assets/img/hously_preview_2.png" alt="Hously Pro Financial Statement Preview" class="w-full h-56 sm:h-64 object-cover object-top transition-transform duration-300 group-hover/screen:scale-105">
+              <div class="absolute bottom-0 inset-x-0 bg-slate-950/80 backdrop-blur-sm p-1.5 text-center">
+                <span class="text-[10px] font-mono text-mossMint">Financial Accounting</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-slate-300 mb-6 leading-relaxed text-sm">
+          Brings structured financial transparency, maintenance task tracking, and clean AGM balance reporting to residential committees, Owners' Management Companies (OMCs), and housing developments.
         </p>
-        <ul class="space-y-4 mb-12 flex-grow text-sm text-slate-300">
-          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Smart Statement
-                Scanning:</strong> Drop in raw financial statements to categorize and reconcile core accounts
-              automatically.</span></li>
-          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>AGM-Ready
-                Reports:</strong> Quickly compile consolidated, structured financial overviews for your next annual
-              general meeting.</span></li>
-          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Structured
-                Directories:</strong> Maintain clear records of individual neighborhood units, active accounts, and
-              property parameters.</span></li>
+
+        <ul class="space-y-3.5 mb-10 flex-grow text-sm text-slate-300">
+          <li class="flex items-start">
+            <span class="text-mossMint mr-3 font-bold">✓</span>
+            <span><strong>Statement Reconciliation:</strong> Parse bank entries into categorized accounts to spot unpaid balances rapidly.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-mossMint mr-3 font-bold">✓</span>
+            <span><strong>AGM-Ready Reports:</strong> Generate organized annual financial summaries and audit trails in one touch.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-mossMint mr-3 font-bold">✓</span>
+            <span><strong>Property & Unit Directory:</strong> Keep homeowner records, maintenance tasks, and service histories organized.</span>
+          </li>
         </ul>
-        <a href="https://play.google.com/store/apps/details?id=ie.hously.pro" target="_blank"
-          class="w-full bg-slate-800 text-center py-3.5 rounded-lg font-semibold text-white hover:bg-mossMint hover:text-labNavy transition-all duration-200 shadow-lg block focus:outline-none focus:ring-2 focus:ring-mossMint">
-          Get it on Google Play
+
+        <!-- Google Play Button -->
+        <a href="https://play.google.com/store/apps/details?id=ie.hously.pro" target="_blank" rel="noopener noreferrer"
+          class="w-full bg-slate-800 hover:bg-slate-700/90 text-white font-medium py-3 px-4 rounded-xl border border-slate-700 hover:border-mossMint transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg group-hover:border-mossMint/50">
+          <svg class="w-5 h-5 fill-current text-mossMint" viewBox="0 0 24 24">
+            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+          </svg>
+          <div class="text-left">
+            <div class="text-[10px] uppercase font-mono tracking-wider text-slate-400 leading-tight">Get it on</div>
+            <div class="text-sm font-bold text-white leading-tight">Google Play</div>
+          </div>
         </a>
       </section>
 
     </div>
 
-    <!-- SECTION III: THE DATA ENGINEERING PROTOCOL MANIFEST -->
-    <section class="mt-28 bg-slate-900/30 border border-slate-800 rounded-xl p-8 max-w-3xl mx-auto relative">
-      <div class="absolute -top-3 left-8 bg-labNavy px-4 text-xs font-mono text-mossMint tracking-widest uppercase">
-        Security Manifest
+    <!-- SECTION III: THE DATA ENGINEERING & PRIVACY PROTOCOL -->
+    <section id="manifest" class="mt-32 bg-slate-900/40 border border-slate-800/90 rounded-2xl p-8 sm:p-12 max-w-4xl mx-auto relative shadow-2xl">
+      <div class="absolute -top-3.5 left-8 bg-labNavy border border-slate-700 px-4 py-1 rounded-full text-xs font-mono text-mossMint tracking-widest uppercase">
+        Security & Privacy Standard
       </div>
-      <h3 class="text-xl font-bold text-white mb-6 flex items-center">
-        Our Architecture & Privacy Protocol
-      </h3>
-      <ul class="space-y-6 text-sm text-slate-300">
-        <li class="border-b border-slate-800/60 pb-4 last:border-b-0 last:pb-0">
-          <strong class="text-white block mb-1">Zero Telemetry Bloat:</strong>
-          We do not collect tracker coordinates, scan device contact lists, or sell usage metrics to background
-          advertising networks.
-        </li>
-        <li class="border-b border-slate-800/60 pb-4 last:border-b-0 last:pb-0">
-          <strong class="text-white block mb-1">Hardened Local Storage:</strong>
-          Your operational databases live directly on your physical hardware. Data handling happens locally, keeping
-          logs completely isolated.
-        </li>
-        <li>
-          <strong class="text-white block mb-1">Clean Structural Exports:</strong>
-          We build native compatibility for data ownership. Export your accounts, receipts, and files instantly anytime
-          you need them.
-        </li>
-      </ul>
+      
+      <div class="max-w-2xl mb-8">
+        <h3 class="text-2xl font-bold text-white mb-2">Our Architecture Protocol</h3>
+        <p class="text-sm text-slate-400">Why businesses choose our boutique offline-first software over bloated cloud platforms.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-slate-950/60 p-6 rounded-xl border border-slate-800/70">
+          <div class="w-10 h-10 rounded-lg bg-mossMint/10 text-mossMint flex items-center justify-center font-mono font-bold text-lg mb-4">01</div>
+          <h4 class="text-base font-semibold text-white mb-2">Zero Telemetry Bloat</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            We never inject trackers, analytics cookies, or behavior profilers into our software. Your usage is strictly your business.
+          </p>
+        </div>
+
+        <div class="bg-slate-950/60 p-6 rounded-xl border border-slate-800/70">
+          <div class="w-10 h-10 rounded-lg bg-mossMint/10 text-mossMint flex items-center justify-center font-mono font-bold text-lg mb-4">02</div>
+          <h4 class="text-base font-semibold text-white mb-2">Hardened Local Storage</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Your operational database lives directly on your physical device. No remote servers holding your clients' sensitive billing records.
+          </p>
+        </div>
+
+        <div class="bg-slate-950/60 p-6 rounded-xl border border-slate-800/70">
+          <div class="w-10 h-10 rounded-lg bg-mossMint/10 text-mossMint flex items-center justify-center font-mono font-bold text-lg mb-4">03</div>
+          <h4 class="text-base font-semibold text-white mb-2">Clean Structural Exports</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Zero vendor lock-in. Export your accounts, receipts, and invoices in open standard formats (PDF, CSV) anytime you wish.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION IV: GET IN TOUCH -->
+    <section class="mt-20 text-center max-w-xl mx-auto p-8 rounded-2xl bg-gradient-to-b from-slate-900/60 to-transparent border border-slate-800">
+      <h3 class="text-xl font-bold text-white mb-2">Need a custom admin utility or have feedback?</h3>
+      <p class="text-sm text-slate-400 mb-6">We actively engineer updates based on real field usage.</p>
+      <a href="mailto:contact@riomhoideas.ie" class="inline-flex items-center text-sm font-mono text-mossMint hover:text-white transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        </svg>
+        contact@riomhoideas.ie
+      </a>
     </section>
   </main>
 
-  <!-- SECTION IV: COMPLIANT INSTITUTIONAL FOOTER LAYOUT -->
-  <footer class="w-full py-12 border-t border-slate-800/80 text-center text-xs text-slate-500 bg-slate-950/40">
-    <p class="font-mono text-slate-400 mb-2">"Smart software tools, built for simpler days."</p>
-    <p class="tracking-wide">© 2026 Riomhoideas. Crafted in County Donegal, Ireland.</p>
+  <!-- SECTION V: FOOTER -->
+  <footer class="w-full py-12 border-t border-slate-800 text-center text-xs text-slate-500 bg-slate-950/60">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col items-center space-y-4">
+      <div class="flex items-center space-x-2">
+        <img src="assets/img/riomhoideas_logo.jpg" alt="Riomhoideas" class="w-6 h-6 rounded-md object-cover">
+        <span class="font-mono text-slate-300 font-bold tracking-wider">RÍOMHOIDEAS</span>
+      </div>
+      <p class="font-mono text-slate-400 text-sm">"Smart software tools, built for simpler days."</p>
+      <p class="tracking-wide text-slate-500">
+        © 2026 Riomhoideas. Crafted in County Donegal, Ireland.
+      </p>
+    </div>
   </footer>
 
 </body>
