@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riomhoideas | Focused Code. Cleaner Admin.</title>
+  <!-- Tailwind CSS Core Injection Engine via CDN for Rapid Setup -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            labNavy: '#0A192F',
+            mossMint: '#64FFDA',
+            slateLight: '#CCD6F6',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-labNavy text-slateLight font-sans selection:bg-mossMint selection:text-labNavy">
+
+  <!-- TOP BRAND NAV ANCHOR -->
+  <nav class="w-full absolute top-0 left-0 p-6 z-20">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <span class="font-mono font-bold tracking-wider text-white text-lg">RÍOMHOIDEAS</span>
+      <span
+        class="text-xs font-mono px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400">Boutique
+        Software Lab</span>
+    </div>
+  </nav>
+
+  <!-- SECTION I: THE LABORATORY HEADER (HERO PANEL) -->
+  <header
+    class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden border-b border-slate-800">
+    <div class="max-w-4xl text-center z-10">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-white">
+        Focused code. <span class="text-mossMint">Cleaner admin.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        An Irish software development lab crafting lightweight, secure, and mobile-first administrative utilities for
+        small businesses and local estate committees.
+      </p>
+      <a href="#suite"
+        class="inline-block bg-transparent border-2 border-mossMint text-mossMint px-8 py-3 rounded font-medium hover:bg-mossMint hover:text-labNavy transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-mossMint focus:ring-offset-2 focus:ring-offset-labNavy">
+        Explore Our Suite
+      </a>
+    </div>
+    <!-- Visual Engineering Accent Matrix -->
+    <div
+      class="absolute inset-0 opacity-5 pointer-events-none font-mono text-xs flex items-center justify-center select-none">
+      <pre class="text-mossMint">
+        func initLab() {
+            let pocketOffice = App(id: "ie.pocketoffice.pro")
+            let hously = App(id: "ie.hously.pro")
+            deploySecureWorkspace([pocketOffice, hously])
+        }
+      </pre>
+    </div>
+  </header>
+
+  <!-- SECTION II: THE PRODUCT MATRIX FUNNEL HUB -->
+  <main id="suite" class="max-w-7xl mx-auto px-6 py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- POCKET OFFICE PRO GRID COLUMN -->
+      <section
+        class="flex flex-col bg-slate-900/40 p-8 md:p-10 rounded-xl border border-slate-800 hover:border-slate-700/70 transition-all duration-300">
+        <div class="mb-6">
+          <span class="text-xs font-mono uppercase tracking-widest text-mossMint">Mobile Workspace</span>
+          <h2 class="text-3xl font-bold text-white mt-1 mb-2">Pocket Office Pro</h2>
+          <p class="text-sm font-medium text-slate-400">Streamlined Admin & Invoicing for Mobile Professionals</p>
+        </div>
+
+        <!-- Application Screenshot Frame Placeholder -->
+        <div
+          class="w-full h-48 bg-slate-950/80 border border-slate-800 rounded-lg mb-8 flex items-center justify-center text-xs font-mono tracking-wider text-slate-500 relative overflow-hidden">
+          <div class="absolute top-3 left-3 flex space-x-1.5">
+            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+          </div>
+          [ POCKET OFFICE PRO DASHBOARD INTERFACE CAPTURE ]
+        </div>
+
+        <p class="text-slate-300 mb-8 leading-relaxed">
+          Engineered for contractors, trades, and mobile service operators who need to manage client documentation,
+          build quotes on-site, and reduce evening paperwork stress.
+        </p>
+        <ul class="space-y-4 mb-12 flex-grow text-sm text-slate-300">
+          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>On-Site
+                Invoicing:</strong> Draft, calculate, and deliver professional, clean invoices instantly upon project
+              completion.</span></li>
+          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Live Client
+                Sign-Off:</strong> Capture secure, on-screen digital signatures directly within the app to verify job
+              confirmation.</span></li>
+          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Financial
+                Snapshots:</strong> Maintain an organized running balance of incoming revenue and unpaid tasks without
+              bloated CRM software.</span></li>
+        </ul>
+        <a href="https://play.google.com/store/apps/details?id=ie.pocketoffice.pro" target="_blank"
+          class="w-full bg-slate-800 text-center py-3.5 rounded-lg font-semibold text-white hover:bg-mossMint hover:text-labNavy transition-all duration-200 shadow-lg block focus:outline-none focus:ring-2 focus:ring-mossMint">
+          Get it on Google Play
+        </a>
+      </section>
+
+      <!-- HOUSLY PRO GRID COLUMN -->
+      <section
+        class="flex flex-col bg-slate-900/40 p-8 md:p-10 rounded-xl border border-slate-800 hover:border-slate-700/70 transition-all duration-300">
+        <div class="mb-6">
+          <span class="text-xs font-mono uppercase tracking-widest text-mossMint">Estate Administration</span>
+          <h2 class="text-3xl font-bold text-white mt-1 mb-2">Hously Pro</h2>
+          <p class="text-sm font-medium text-slate-400">Clear Oversight for Residential Committees & MUDs</p>
+        </div>
+
+        <!-- Application Screenshot Frame Placeholder -->
+        <div
+          class="w-full h-48 bg-slate-950/80 border border-slate-800 rounded-lg mb-8 flex items-center justify-center text-xs font-mono tracking-wider text-slate-500 relative overflow-hidden">
+          <div class="absolute top-3 left-3 flex space-x-1.5">
+            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+          </div>
+          [ HOUSLY PRO MANAGEMENT PORTAL INTERFACE CAPTURE ]
+        </div>
+
+        <p class="text-slate-300 mb-8 leading-relaxed">
+          Brings structured accounting clarity, secure document organization, and clean reporting tools to housing
+          estate committees, property factors, and managed districts.
+        </p>
+        <ul class="space-y-4 mb-12 flex-grow text-sm text-slate-300">
+          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Smart Statement
+                Scanning:</strong> Drop in raw financial statements to categorize and reconcile core accounts
+              automatically.</span></li>
+          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>AGM-Ready
+                Reports:</strong> Quickly compile consolidated, structured financial overviews for your next annual
+              general meeting.</span></li>
+          <li class="flex items-start"><span class="text-mossMint mr-3 mt-0.5">✓</span> <span><strong>Structured
+                Directories:</strong> Maintain clear records of individual neighborhood units, active accounts, and
+              property parameters.</span></li>
+        </ul>
+        <a href="https://play.google.com/store/apps/details?id=ie.hously.pro" target="_blank"
+          class="w-full bg-slate-800 text-center py-3.5 rounded-lg font-semibold text-white hover:bg-mossMint hover:text-labNavy transition-all duration-200 shadow-lg block focus:outline-none focus:ring-2 focus:ring-mossMint">
+          Get it on Google Play
+        </a>
+      </section>
+
+    </div>
+
+    <!-- SECTION III: THE DATA ENGINEERING PROTOCOL MANIFEST -->
+    <section class="mt-28 bg-slate-900/30 border border-slate-800 rounded-xl p-8 max-w-3xl mx-auto relative">
+      <div class="absolute -top-3 left-8 bg-labNavy px-4 text-xs font-mono text-mossMint tracking-widest uppercase">
+        Security Manifest
+      </div>
+      <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+        Our Architecture & Privacy Protocol
+      </h3>
+      <ul class="space-y-6 text-sm text-slate-300">
+        <li class="border-b border-slate-800/60 pb-4 last:border-b-0 last:pb-0">
+          <strong class="text-white block mb-1">Zero Telemetry Bloat:</strong>
+          We do not collect tracker coordinates, scan device contact lists, or sell usage metrics to background
+          advertising networks.
+        </li>
+        <li class="border-b border-slate-800/60 pb-4 last:border-b-0 last:pb-0">
+          <strong class="text-white block mb-1">Hardened Local Storage:</strong>
+          Your operational databases live directly on your physical hardware. Data handling happens locally, keeping
+          logs completely isolated.
+        </li>
+        <li>
+          <strong class="text-white block mb-1">Clean Structural Exports:</strong>
+          We build native compatibility for data ownership. Export your accounts, receipts, and files instantly anytime
+          you need them.
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- SECTION IV: COMPLIANT INSTITUTIONAL FOOTER LAYOUT -->
+  <footer class="w-full py-12 border-t border-slate-800/80 text-center text-xs text-slate-500 bg-slate-950/40">
+    <p class="font-mono text-slate-400 mb-2">"Smart software tools, built for simpler days."</p>
+    <p class="tracking-wide">© 2026 Riomhoideas. Crafted in County Donegal, Ireland.</p>
+  </footer>
+
+</body>
+
+</html>
