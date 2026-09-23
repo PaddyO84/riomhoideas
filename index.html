@@ -427,15 +427,63 @@
     </section>
 
     <!-- SECTION IV: GET IN TOUCH -->
-    <section class="mt-20 text-center max-w-xl mx-auto p-8 rounded-2xl bg-gradient-to-b from-slate-900/60 to-transparent border border-slate-800">
-      <h3 class="text-xl font-bold text-white mb-2">Need a custom admin utility or have feedback?</h3>
-      <p class="text-sm text-slate-400 mb-6">We actively engineer updates based on real field usage.</p>
-      <a href="mailto:contact@riomhoideas.ie" class="inline-flex items-center text-sm font-mono text-mossMint hover:text-white transition-colors">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-        </svg>
-        contact@riomhoideas.ie
-      </a>
+    <section class="mt-20 max-w-2xl mx-auto p-8 sm:p-12 rounded-2xl bg-gradient-to-b from-slate-900/80 to-slate-900/40 border border-slate-800 shadow-xl">
+      <div class="text-center mb-8">
+        <h3 class="text-2xl font-bold text-white mb-3">Start a Project</h3>
+        <p class="text-sm text-slate-400">Looking for a custom admin utility or mobile app? Tell us what you need.</p>
+      </div>
+
+      <form id="contactForm" class="space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="space-y-1.5 text-left">
+            <label for="name" class="text-xs font-mono text-mossMint uppercase tracking-wider">Full Name</label>
+            <input type="text" id="name" name="name" required class="w-full bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mossMint focus:ring-1 focus:ring-mossMint transition-colors">
+          </div>
+          <div class="space-y-1.5 text-left">
+            <label for="email" class="text-xs font-mono text-mossMint uppercase tracking-wider">Email Address</label>
+            <input type="email" id="email" name="email" required class="w-full bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mossMint focus:ring-1 focus:ring-mossMint transition-colors">
+          </div>
+        </div>
+
+        <div class="space-y-1.5 text-left">
+          <label for="projectType" class="text-xs font-mono text-mossMint uppercase tracking-wider">Project Type</label>
+          <div class="relative">
+            <select id="projectType" name="projectType" required class="w-full bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mossMint focus:ring-1 focus:ring-mossMint transition-colors appearance-none">
+              <option value="" disabled selected>Select a project type...</option>
+              <option value="Mobile App Development">Mobile App Development</option>
+              <option value="Web Application / Website">Web Application / Website</option>
+              <option value="Custom Offline Utility">Custom Offline Utility</option>
+              <option value="General Inquiry">General Inquiry</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1.5 text-left">
+          <label for="details" class="text-xs font-mono text-mossMint uppercase tracking-wider">Project Details</label>
+          <textarea id="details" name="details" rows="4" required class="w-full bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mossMint focus:ring-1 focus:ring-mossMint transition-colors resize-none" placeholder="Briefly describe your requirements..."></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full bg-mossMint text-labNavy font-semibold px-8 py-3.5 rounded-lg hover:bg-teal-300 transition-all duration-300 shadow-glow-mint mt-4 flex items-center justify-center">
+          <span id="submitText">Submit Request</span>
+          <svg id="submitIcon" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+          <svg id="loadingIcon" class="w-5 h-5 ml-2 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </button>
+
+        <div id="formSuccess" class="hidden text-center p-4 bg-emerald-900/30 border border-emerald-500/50 rounded-lg mt-4">
+          <p class="text-emerald-400 text-sm font-medium">Message sent successfully! We'll be in touch soon.</p>
+        </div>
+        <div id="formError" class="hidden text-center p-4 bg-red-900/30 border border-red-500/50 rounded-lg mt-4">
+          <p class="text-red-400 text-sm font-medium">Something went wrong. Please try again or email us directly.</p>
+        </div>
+      </form>
     </section>
   </main>
 
@@ -465,6 +513,64 @@
     </div>
   </footer>
 
+  <script>
+    // GOOGLE APPS SCRIPT WEB APP URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzeiwNsZOH76d30TVfRF6VOJwxL0r5pJC_OC2TmBECIZNPxRBEhWp78dYwF3nsvQdRm/exec';
+    
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitIcon = document.getElementById('submitIcon');
+    const loadingIcon = document.getElementById('loadingIcon');
+    const formSuccess = document.getElementById('formSuccess');
+    const formError = document.getElementById('formError');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      
+      if (scriptURL === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL') {
+        alert("Please set your Google Script URL first!");
+        return;
+      }
+
+      // UI Loading state
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+      submitText.textContent = 'Sending...';
+      submitIcon.classList.add('hidden');
+      loadingIcon.classList.remove('hidden');
+      formSuccess.classList.add('hidden');
+      formError.classList.add('hidden');
+
+      const formData = new FormData(form);
+      
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.json();
+        })
+        .then(data => {
+          if (data.result === "success") {
+            formSuccess.classList.remove('hidden');
+            form.reset();
+          } else {
+            throw new Error("Submission failed");
+          }
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          formError.classList.remove('hidden');
+        })
+        .finally(() => {
+          // Reset UI
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+          submitText.textContent = 'Submit Request';
+          submitIcon.classList.remove('hidden');
+          loadingIcon.classList.add('hidden');
+        });
+    });
+  </script>
 </body>
 
 </html>

@@ -1,5 +1,4 @@
 import os
-import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 def create_developer_header_graphic(logo_path, screenshot_path, output_path, app_name, tagline, subtag):
@@ -147,13 +146,14 @@ def create_developer_header_graphic(logo_path, screenshot_path, output_path, app
     print(f"Generated 4K Play Store Header: {output_path} ({width}x{height})")
 
 if __name__ == "__main__":
-    logo = "c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/riomhoideas_logo.jpg"
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    logo = os.path.join(base_dir, "assets", "img", "riomhoideas_logo.jpg")
 
     # 1. Official Google Play Developer Page Header (4096 x 2304)
     create_developer_header_graphic(
         logo_path=logo,
-        screenshot_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/hously_preview_1.png",
-        output_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/google_play_header_4096x2304.png",
+        screenshot_path=os.path.join(base_dir, "assets", "img", "hously_preview_1.png"),
+        output_path=os.path.join(base_dir, "assets", "img", "google_play_header_4096x2304.png"),
         app_name="Ríomhoideas",
         tagline="Smarter admin. Zero bloat.",
         subtag="An independent Irish software studio crafting lightweight, secure, and mobile-first\nadministrative utilities for mobile professionals and residential committees.\nPrivate, local-first architecture with 100% data sovereignty."
@@ -162,8 +162,8 @@ if __name__ == "__main__":
     # 2. Pocket Office Pro 4K Header (4096 x 2304)
     create_developer_header_graphic(
         logo_path=logo,
-        screenshot_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/pocketoffice_preview_1.jpeg",
-        output_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/google_play_header_pocketoffice_4096x2304.png",
+        screenshot_path=os.path.join(base_dir, "assets", "img", "pocketoffice_preview_1.jpeg"),
+        output_path=os.path.join(base_dir, "assets", "img", "google_play_header_pocketoffice_4096x2304.png"),
         app_name="Pocket Office Pro",
         tagline="Invoicing & Sign-Off in Seconds",
         subtag="Professional mobile invoicing, quote generation, and job tracking.\nCapture live client signatures on-site with zero evening paperwork.\nBuilt for mobile contractors, tradesmen, and service technicians."
@@ -172,8 +172,8 @@ if __name__ == "__main__":
     # 3. Hously Pro 4K Header (4096 x 2304)
     create_developer_header_graphic(
         logo_path=logo,
-        screenshot_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/hously_preview_1.png",
-        output_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/google_play_header_hously_4096x2304.png",
+        screenshot_path=os.path.join(base_dir, "assets", "img", "hously_preview_1.png"),
+        output_path=os.path.join(base_dir, "assets", "img", "google_play_header_hously_4096x2304.png"),
         app_name="Hously Pro",
         tagline="Clear Residential Oversight",
         subtag="Smart bank statement scanning, arrears reconciliation, and AGM-ready reports.\nUnified management platform for residential committees, OMCs, and factors.\nScoped local database ensuring complete financial privacy."

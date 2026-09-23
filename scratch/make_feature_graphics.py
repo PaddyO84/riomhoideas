@@ -1,5 +1,4 @@
 import os
-import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 def create_feature_graphic(logo_path, screenshot_path, output_path, app_name, tagline, subtag):
@@ -146,13 +145,14 @@ def create_feature_graphic(logo_path, screenshot_path, output_path, app_name, ta
     print(f"Generated: {output_path} ({width}x{height})")
 
 if __name__ == "__main__":
-    logo = "c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/riomhoideas_logo.jpg"
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    logo = os.path.join(base_dir, "assets", "img", "riomhoideas_logo.jpg")
     
     # 1. Riomhoideas Studio Header
     create_feature_graphic(
         logo_path=logo,
-        screenshot_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/hously_preview_1.png",
-        output_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/google_play_feature_graphic_riomhoideas.png",
+        screenshot_path=os.path.join(base_dir, "assets", "img", "hously_preview_1.png"),
+        output_path=os.path.join(base_dir, "assets", "img", "google_play_feature_graphic_riomhoideas.png"),
         app_name="Ríomhoideas",
         tagline="Smarter admin. Zero bloat.",
         subtag="Lightweight, secure, and mobile-first administrative utilities.\nBuilt for mobile service operators & residential estate committees."
@@ -161,8 +161,8 @@ if __name__ == "__main__":
     # 2. Pocket Office Pro Feature Graphic
     create_feature_graphic(
         logo_path=logo,
-        screenshot_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/pocketoffice_preview_1.jpeg",
-        output_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/google_play_feature_graphic_pocketoffice.png",
+        screenshot_path=os.path.join(base_dir, "assets", "img", "pocketoffice_preview_1.jpeg"),
+        output_path=os.path.join(base_dir, "assets", "img", "google_play_feature_graphic_pocketoffice.png"),
         app_name="Pocket Office Pro",
         tagline="Invoicing & Sign-Off in Seconds",
         subtag="Draft quotes, calculate VAT, and deliver clean PDF invoices on-site.\nCapture live client signatures with zero evening paperwork."
@@ -171,8 +171,8 @@ if __name__ == "__main__":
     # 3. Hously Pro Feature Graphic
     create_feature_graphic(
         logo_path=logo,
-        screenshot_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/hously_preview_1.png",
-        output_path="c:/Users/patri/Documents/GitHub/riomhoideas/assets/img/google_play_feature_graphic_hously.png",
+        screenshot_path=os.path.join(base_dir, "assets", "img", "hously_preview_1.png"),
+        output_path=os.path.join(base_dir, "assets", "img", "google_play_feature_graphic_hously.png"),
         app_name="Hously Pro",
         tagline="Clear Residential Oversight",
         subtag="Smart financial statement scanning, reconciliation, and AGM-ready reports.\nUnified estate management for housing committees & OMCs."
