@@ -17,19 +17,30 @@ function doPost(e) {
       throw new Error("Input exceeds maximum length.");
     }
 
-    const cache = CacheService.getScriptCache();
-    const cacheKey = 'rate_limit_' + rawEmail; // Use email for rate limiting
-    const count = parseInt(cache.get(cacheKey) || '0', 10);
-    if (count >= 5) {
-      throw new Error("Rate limit exceeded.");
-    }
-    cache.put(cacheKey, (count + 1).toString(), 3600); // 1 hour cap
-
     const lock = LockService.getScriptLock();
     let rowIndex = -1;
 
     try {
       lock.waitLock(10000);
+      
+      const emailObj = rawEmail.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailObj)) {
+        throw new Error("Invalid email address.");
+      }
+
+      const cache = CacheService.getScriptCache();
+      const emailCacheKey = 'rate_limit_' + emailObj;
+      const globalCacheKey = 'rate_limit_global';
+      
+      const emailCount = parseInt(cache.get(emailCacheKey) || '0', 10);
+      const globalCount = parseInt(cache.get(globalCacheKey) || '0', 10);
+      
+      if (emailCount >= 5 || globalCount >= 50) {
+        throw new Error("Rate limit exceeded.");
+      }
+      
+      cache.put(emailCacheKey, (emailCount + 1).toString(), 3600);
+      cache.put(globalCacheKey, (globalCount + 1).toString(), 3600);
       
       const doc = SpreadsheetApp.getActiveSpreadsheet();
       const sheet = doc.getSheetByName(sheetName);
@@ -38,6 +49,8 @@ function doPost(e) {
       if (sheet.getLastRow() === 0) {
         sheet.appendRow(['Timestamp', 'Name', 'Email', 'Project Type', 'Details', 'Status']);
       }
+
+      sheet.getRange("B:E").setNumberFormat('@'); // Format B-E as plain text
 
       const escapeFormula = (val) => {
         if (typeof val === 'string' && /^[=+\-@]/.test(val)) {
@@ -52,10 +65,21 @@ function doPost(e) {
       const details = escapeFormula(rawDetails);
       
       // Check for existing inquiry to avoid duplicates on retries
-      const data = sheet.getDataRange().getValues();
-      for (let i = data.length - 1; i >= 1; i--) {
-        const row = data[i];
-        if (row[1] === name && row[2] === email && row[3] === projectType && row[4] === details) {
+      const dataDisplay = sheet.getDataRange().getDisplayValues();
+      const dataVals = sheet.getDataRange().getValues();
+      const now = new Date().getTime();
+      
+      for (let i = dataDisplay.length - 1; i >= 1; i--) {
+        const rowDisplay = dataDisplay[i];
+        const rowVal = dataVals[i];
+        const rowTime = new Date(rowVal[0]).getTime();
+        
+        // Stop scanning if the row is older than 10 minutes
+        if (now - rowTime > 10 * 60 * 1000) {
+          break;
+        }
+        
+        if (rowDisplay[1] === rawName && rowDisplay[2] === rawEmail && rowDisplay[3] === rawType && rowDisplay[4] === rawDetails) {
           rowIndex = i + 1; // 1-based index for Google Sheets
           break;
         }
