@@ -467,6 +467,12 @@
           <textarea id="details" name="details" rows="4" required class="w-full bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mossMint focus:ring-1 focus:ring-mossMint transition-colors resize-none" placeholder="Briefly describe your requirements..."></textarea>
         </div>
 
+        <!-- Honeypot anti-spam field -->
+        <div style="display:none;" aria-hidden="true">
+          <label for="honeypot">Leave this field blank</label>
+          <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off">
+        </div>
+
         <button type="submit" id="submitBtn" class="w-full bg-mossMint text-labNavy font-semibold px-8 py-3.5 rounded-lg hover:bg-teal-300 transition-all duration-300 shadow-glow-mint mt-4 flex items-center justify-center">
           <span id="submitText">Submit Request</span>
           <svg id="submitIcon" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -528,11 +534,6 @@
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-      
-      if (scriptURL === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL') {
-        alert("Please set your Google Script URL first!");
-        return;
-      }
 
       // UI Loading state
       submitBtn.disabled = true;
