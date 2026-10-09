@@ -171,3 +171,58 @@ test('doPost handles and catches internal errors safely', () => {
   assert.strictEqual(parsed.result, 'error');
   assert.strictEqual(parsed.error, 'An internal server error occurred.');
 });
+
+test('findRecentDuplicateRow identifies matching recent submissions and respects 10-minute cutoff', () => {
+  // Empty sheet (or only header row) returns -1
+  assert.strictEqual(findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Need an app'), -1);
+
+  // Setup sheet with rows
+  const now = Date.now();
+  rows = [
+    ['Timestamp', 'Name', 'Email', 'Project Type', 'Details', 'Status'],
+    [new Date(now - 15 * 60 * 1000).toISOString(), 'Old User', 'old@example.com', 'Web', 'Old request', 'Emailed'], // 15 mins ago
+    [new Date(now - 5 * 60 * 1000).toISOString(), 'Alice', 'alice@example.com', 'Mobile', 'Need an app', 'Emailed'],   // 5 mins ago (row 3)
+    [new Date(now - 2 * 60 * 1000).toISOString(), 'Bob', 'bob@example.com', 'Design', 'Need design', 'Emailed']        // 2 mins ago (row 4)
+  ];
+
+  // Exact match within 10 minutes returns row index (row 3, 1-indexed)
+  const matchIndex = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Need an app');
+  assert.strictEqual(matchIndex, 3);
+
+  // Match exists but is older than 10 minutes -> returns -1
+  const expiredIndex = findRecentDuplicateRow(mockSheet, 'Old User', 'old@example.com', 'Web', 'Old request');
+  assert.strictEqual(expiredIndex, -1);
+
+  // Non-matching field returns -1
+  const differentDetails = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Different detail');
+  assert.strictEqual(differentDetails, -1);
+});
+
+test('doPost handles duplicate submissions by updating existing row without appending a new row', () => {
+  const payload = {
+    parameter: {
+      name: 'Niamh Murphy',
+      email: 'niamh@example.com',
+      projectType: 'Mobile App Development',
+      details: 'Inquiry for Android app.'
+    }
+  };
+
+  // Initial submission
+  const firstRes = doPost(payload);
+  const firstParsed = JSON.parse(firstRes.text);
+  assert.strictEqual(firstParsed.result, 'success');
+  assert.strictEqual(firstParsed.row, 2);
+  assert.strictEqual(rows.length, 2); // Header + row 2
+  assert.strictEqual(rows[1][5], 'Emailed');
+
+  // Second duplicate submission within the 10-minute window
+  const secondRes = doPost(payload);
+  const secondParsed = JSON.parse(secondRes.text);
+  assert.strictEqual(secondParsed.result, 'success');
+  assert.strictEqual(secondParsed.row, 2);
+  assert.strictEqual(rows.length, 2, 'Should update existing row instead of appending a new row');
+  assert.strictEqual(rows[1][5], 'Emailed');
+  assert.strictEqual(sentEmails.length, 2, 'Email notification dispatched for retry/duplicate submission');
+});
+
