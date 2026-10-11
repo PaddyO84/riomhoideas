@@ -47,30 +47,36 @@ function validateInputs(parameter) {
 
 /**
  * Checks and updates rate limits using CacheService batch operations.
+ * Enforces per-email hourly limit, global hourly limit, and global per-minute velocity limit.
  */
-function enforceRateLimits(cache, email) {
+function enforceRateLimits(cache, email, nowMs) {
+  const currentNow = nowMs || new Date().getTime();
+  const minuteBucket = Math.floor(currentNow / 60000);
+  const minuteCacheKey = 'rate_limit_min_' + minuteBucket;
   const emailCacheKey = 'rate_limit_' + email;
   const globalCacheKey = 'rate_limit_global';
 
-  const cached = cache.getAll([emailCacheKey, globalCacheKey]);
+  const cached = cache.getAll([emailCacheKey, globalCacheKey, minuteCacheKey]);
   const emailCount = parseInt(cached[emailCacheKey] || '0', 10);
   const globalCount = parseInt(cached[globalCacheKey] || '0', 10);
+  const minuteCount = parseInt(cached[minuteCacheKey] || '0', 10);
 
-  if (emailCount >= 5 || globalCount >= 50) {
+  if (emailCount >= 5 || globalCount >= 50 || minuteCount >= 10) {
     throw new Error("Rate limit exceeded.");
   }
 
   cache.putAll({
     [emailCacheKey]: (emailCount + 1).toString(),
-    [globalCacheKey]: (globalCount + 1).toString()
+    [globalCacheKey]: (globalCount + 1).toString(),
+    [minuteCacheKey]: (minuteCount + 1).toString()
   }, 3600);
 }
 
 /**
  * Scans recent rows to check for duplicate submission within 10 minutes.
  */
-function findRecentDuplicateRow(sheet, rawName, rawEmail, rawType, rawDetails) {
-  const lastRow = sheet.getLastRow();
+function findRecentDuplicateRow(sheet, rawName, rawEmail, rawType, rawDetails, optionalLastRow) {
+  const lastRow = optionalLastRow !== undefined ? optionalLastRow : sheet.getLastRow();
   if (lastRow <= 1) return -1;
 
   // Scan only the most recent rows (up to 25) instead of the entire sheet
@@ -113,14 +119,17 @@ function doPost(e) {
       const doc = SpreadsheetApp.getActiveSpreadsheet();
       const sheet = doc.getSheetByName(sheetName);
 
+      let lastRow = sheet.getLastRow();
+
       // If it's the first time, add headers and format columns
-      if (sheet.getLastRow() === 0) {
+      if (lastRow === 0) {
         sheet.appendRow(['Timestamp', 'Name', 'Email', 'Project Type', 'Details', 'Status']);
         sheet.getRange("B:E").setNumberFormat('@'); // Format B-E as plain text
+        lastRow = 1;
       }
 
       // Check for recent duplicate to handle retries gracefully
-      rowIndex = findRecentDuplicateRow(sheet, validated.rawName, validated.rawEmail, validated.rawType, validated.rawDetails);
+      rowIndex = findRecentDuplicateRow(sheet, validated.rawName, validated.rawEmail, validated.rawType, validated.rawDetails, lastRow);
 
       const timestamp = new Date();
 
@@ -133,7 +142,8 @@ function doPost(e) {
           validated.details,
           'Pending'
         ]);
-        rowIndex = sheet.getLastRow();
+        lastRow++;
+        rowIndex = lastRow;
       } else {
         sheet.getRange(rowIndex, 1).setValue(timestamp);
         sheet.getRange(rowIndex, 6).setValue('Pending');

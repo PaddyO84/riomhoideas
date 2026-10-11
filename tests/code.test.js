@@ -144,6 +144,16 @@ test('Rate limiting triggers on global threshold', () => {
   }, /Rate limit exceeded/);
 });
 
+test('Rate limiting triggers on per-minute velocity threshold to prevent randomized email bypass', () => {
+  const cache = global.CacheService.getScriptCache();
+  const minuteBucket = Math.floor(Date.now() / 60000);
+  cacheStore['rate_limit_min_' + minuteBucket] = '10';
+
+  assert.throws(() => {
+    enforceRateLimits(cache, 'random_email_123@example.com');
+  }, /Rate limit exceeded/);
+});
+
 test('doPost processes a valid inquiry end-to-end', () => {
   const res = doPost({
     parameter: {

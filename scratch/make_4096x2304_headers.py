@@ -1,95 +1,57 @@
 import os
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import ImageDraw, ImageFont
+from graphic_utils import (
+    GraphicConfig,
+    create_gradient_background,
+    add_ambient_glows,
+    render_logo_badge,
+    render_phone_screenshot
+)
 
-def create_developer_header_graphic(logo_path, screenshot_path, output_path, app_name, tagline, subtag):
-    width = 4096
-    height = 2304
+def create_developer_header_graphic(config: GraphicConfig):
+    width = config.width
+    height = config.height
 
-    # 1. Base Gradient Canvas (16:9 4K)
-    img = Image.new("RGBA", (width, height), (10, 25, 47, 255))
-    draw = ImageDraw.Draw(img)
-
-    for y in range(height):
-        ratio = y / float(height)
-        r = int(10 * (1 - ratio) + 4 * ratio)
-        g = int(25 * (1 - ratio) + 11 * ratio)
-        b = int(47 * (1 - ratio) + 21 * ratio)
-        draw.line([(0, y), (width, y)], fill=(r, g, b, 255))
+    # 1. Base Dark Navy Gradient Background (Fast 1D Scaling)
+    img = create_gradient_background(
+        width=width,
+        height=height,
+        top_color=(10, 25, 47, 255),
+        bottom_color=(4, 11, 21, 255)
+    )
 
     # 2. Ambient Glowing Atmosphere
-    glow_layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    glow_draw = ImageDraw.Draw(glow_layer)
-
-    # Large mint glow behind logo on left
-    glow_draw.ellipse([(-300, -100), (1800, 2000)], fill=(100, 255, 218, 45))
-    # Cyan glow behind phone on right
-    glow_draw.ellipse([(2400, 300), (4400, 2300)], fill=(0, 229, 255, 35))
-    
-    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=220))
-    img = Image.alpha_composite(img, glow_layer)
-    draw = ImageDraw.Draw(img)
+    glows = [
+        ((-300, -100, 1800, 2000), (100, 255, 218, 45)),
+        ((2400, 300, 4400, 2300), (0, 229, 255, 35))
+    ]
+    img = add_ambient_glows(img, width, height, blur_radius=220, glows=glows)
 
     # 3. Left Brand Logo Badge
-    if os.path.exists(logo_path):
-        logo = Image.open(logo_path).convert("RGBA")
-        logo_size = 580
-        logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
-
-        logo_badge_x = 280
-        logo_badge_y = 350
-        badge_pad = 48
-        badge_rect = [
-            logo_badge_x - badge_pad,
-            logo_badge_y - badge_pad,
-            logo_badge_x + logo_size + badge_pad,
-            logo_badge_y + logo_size + badge_pad
-        ]
-        
-        # Soft outer glow
-        badge_glow = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-        bg_draw = ImageDraw.Draw(badge_glow)
-        bg_draw.rounded_rectangle(badge_rect, radius=90, fill=(100, 255, 218, 90))
-        badge_glow = badge_glow.filter(ImageFilter.GaussianBlur(radius=60))
-        img = Image.alpha_composite(img, badge_glow)
-        draw = ImageDraw.Draw(img)
-
-        # Crisp badge frame
-        draw.rounded_rectangle(badge_rect, radius=90, fill=(7, 17, 32, 240), outline=(100, 255, 218, 220), width=8)
-
-        # Paste logo with rounded mask
-        mask = Image.new("L", (logo_size, logo_size), 0)
-        mask_draw = ImageDraw.Draw(mask)
-        mask_draw.rounded_rectangle([0, 0, logo_size, logo_size], radius=60, fill=255)
-        img.paste(logo, (logo_badge_x, logo_badge_y), mask)
+    img = render_logo_badge(
+        img=img,
+        logo_path=config.logo_path,
+        x=280,
+        y=350,
+        size=580,
+        badge_radius=90,
+        badge_pad=48,
+        border_width=8
+    )
 
     # 4. Right: High-Res Perspective Phone Mockup
-    if os.path.exists(screenshot_path):
-        ss = Image.open(screenshot_path).convert("RGBA")
-        ph_w = 1000
-        ph_h = 1950
-        ss_resized = ss.resize((ph_w, int(ph_w * (ss.height / ss.width))), Image.Resampling.LANCZOS)
-        
-        chassis_x = 2750
-        chassis_y = 220
-        
-        # Phone chassis shadow
-        phone_shadow = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-        ps_draw = ImageDraw.Draw(phone_shadow)
-        ps_draw.rounded_rectangle([chassis_x - 30, chassis_y - 20, chassis_x + ph_w + 30, chassis_y + 1920], radius=130, fill=(0, 0, 0, 200))
-        phone_shadow = phone_shadow.filter(ImageFilter.GaussianBlur(radius=80))
-        img = Image.alpha_composite(img, phone_shadow)
-        draw = ImageDraw.Draw(img)
+    img = render_phone_screenshot(
+        img=img,
+        screenshot_path=config.screenshot_path,
+        chassis_x=2750,
+        chassis_y=220,
+        ph_w=1000,
+        crop_h=1870,
+        corner_radius=100,
+        border_width=8
+    )
 
-        # Phone chassis frame
-        draw.rounded_rectangle([chassis_x - 20, chassis_y - 20, chassis_x + ph_w + 20, chassis_y + 1900], radius=120, fill=(15, 23, 42, 255), outline=(51, 65, 85, 255), width=8)
-
-        # Screen crop & insert
-        crop_box = (0, 0, ph_w, 1870)
-        ss_cropped = ss_resized.crop(crop_box)
-        ss_mask = Image.new("L", (ph_w, 1870), 0)
-        ss_mask_draw = ImageDraw.Draw(ss_mask)
-        ss_mask_draw.rounded_rectangle([0, 0, ph_w, 1870], radius=100, fill=255)
-        img.paste(ss_cropped, (chassis_x, chassis_y), ss_mask)
+    draw = ImageDraw.Draw(img)
 
     # 5. High-Resolution Typography
     try:
@@ -115,25 +77,18 @@ def create_developer_header_graphic(logo_path, screenshot_path, output_path, app
     draw.text((pill_x + 105, pill_y + 22), "RIOMHOIDEAS SOFTWARE LAB", fill=(100, 255, 218, 255), font=font_pill)
 
     # Main Brand Name
-    draw.text((1050, 490), app_name.upper(), fill=(255, 255, 255, 255), font=font_brand)
+    draw.text((1050, 490), config.app_name.upper(), fill=(255, 255, 255, 255), font=font_brand)
 
     # Tagline (Mint Gradient accent)
-    draw.text((1050, 690), tagline, fill=(100, 255, 218, 255), font=font_tag)
+    draw.text((1050, 690), config.tagline, fill=(100, 255, 218, 255), font=font_tag)
 
     # Multi-line Subtitle
-    draw.text((280, 1140), subtag, fill=(203, 213, 225, 255), font=font_sub, spacing=28)
+    draw.text((280, 1140), config.subtag, fill=(203, 213, 225, 255), font=font_sub, spacing=28)
 
     # Bottom Trust Badges
-    badges = [
-        "100% Offline-First",
-        "Zero Telemetry",
-        "Local Scoped Database",
-        "County Donegal, Ireland"
-    ]
-    
     start_x = 280
     stat_y = 1840
-    for b in badges:
+    for b in config.badges:
         text_bbox = draw.textbbox((0, 0), b, font=font_stat)
         bw = text_bbox[2] - text_bbox[0] + 80
         bh = 110
@@ -142,39 +97,49 @@ def create_developer_header_graphic(logo_path, screenshot_path, output_path, app
         start_x += bw + 36
 
     # Save output in pristine high quality PNG
-    img.convert("RGB").save(output_path, "PNG", quality=98)
-    print(f"Generated 4K Play Store Header: {output_path} ({width}x{height})")
+    img.convert("RGB").save(config.output_path, "PNG", quality=98)
+    print(f"Generated 4K Play Store Header: {config.output_path} ({width}x{height})")
+
 
 if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     logo = os.path.join(base_dir, "assets", "img", "riomhoideas_logo.jpg")
 
     # 1. Official Google Play Developer Page Header (4096 x 2304)
-    create_developer_header_graphic(
+    create_developer_header_graphic(GraphicConfig(
         logo_path=logo,
         screenshot_path=os.path.join(base_dir, "assets", "img", "hously_preview_1.png"),
         output_path=os.path.join(base_dir, "assets", "img", "google_play_header_4096x2304.png"),
         app_name="Ríomhoideas",
         tagline="Smarter admin. Zero bloat.",
-        subtag="An independent Irish software studio crafting lightweight, secure, and mobile-first\nadministrative utilities for mobile professionals and residential committees.\nPrivate, local-first architecture with 100% data sovereignty."
-    )
+        subtag="An independent Irish software studio crafting lightweight, secure, and mobile-first\nadministrative utilities for mobile professionals and residential committees.\nPrivate, local-first architecture with 100% data sovereignty.",
+        width=4096,
+        height=2304,
+        badges=["100% Offline-First", "Zero Telemetry", "Local Scoped Database", "County Donegal, Ireland"]
+    ))
 
     # 2. Pocket Office Pro 4K Header (4096 x 2304)
-    create_developer_header_graphic(
+    create_developer_header_graphic(GraphicConfig(
         logo_path=logo,
         screenshot_path=os.path.join(base_dir, "assets", "img", "pocketoffice_preview_1.jpeg"),
         output_path=os.path.join(base_dir, "assets", "img", "google_play_header_pocketoffice_4096x2304.png"),
         app_name="Pocket Office Pro",
         tagline="Invoicing & Sign-Off in Seconds",
-        subtag="Professional mobile invoicing, quote generation, and job tracking.\nCapture live client signatures on-site with zero evening paperwork.\nBuilt for mobile contractors, tradesmen, and service technicians."
-    )
+        subtag="Professional mobile invoicing, quote generation, and job tracking.\nCapture live client signatures on-site with zero evening paperwork.\nBuilt for mobile contractors, tradesmen, and service technicians.",
+        width=4096,
+        height=2304,
+        badges=["100% Offline-First", "Zero Telemetry", "Local Scoped Database", "County Donegal, Ireland"]
+    ))
 
     # 3. Hously Pro 4K Header (4096 x 2304)
-    create_developer_header_graphic(
+    create_developer_header_graphic(GraphicConfig(
         logo_path=logo,
         screenshot_path=os.path.join(base_dir, "assets", "img", "hously_preview_1.png"),
         output_path=os.path.join(base_dir, "assets", "img", "google_play_header_hously_4096x2304.png"),
         app_name="Hously Pro",
         tagline="Clear Residential Oversight",
-        subtag="Smart bank statement scanning, arrears reconciliation, and AGM-ready reports.\nUnified management platform for residential committees, OMCs, and factors.\nScoped local database ensuring complete financial privacy."
-    )
+        subtag="Smart bank statement scanning, arrears reconciliation, and AGM-ready reports.\nUnified management platform for residential committees, OMCs, and factors.\nScoped local database ensuring complete financial privacy.",
+        width=4096,
+        height=2304,
+        badges=["100% Offline-First", "Zero Telemetry", "Local Scoped Database", "County Donegal, Ireland"]
+    ))
