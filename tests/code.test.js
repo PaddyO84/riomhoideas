@@ -86,6 +86,8 @@ test('Formula Escaping Helper covers Excel/CSV injection triggers', () => {
   assert.strictEqual(escapeFormula('|calc'), "'|calc");
   assert.strictEqual(escapeFormula('%tag'), "'%tag");
   assert.strictEqual(escapeFormula('\tleadingTab'), "'\tleadingTab");
+  assert.strictEqual(escapeFormula('   =SUM(1,2)'), "'   =SUM(1,2)");
+  assert.strictEqual(escapeFormula(' \t -cmd'), "' \t -cmd");
   assert.strictEqual(escapeFormula('Normal string'), 'Normal string');
   assert.strictEqual(escapeFormula(12345), 12345);
 });
@@ -184,7 +186,7 @@ test('doPost handles and catches internal errors safely', () => {
 
 test('findRecentDuplicateRow identifies matching recent submissions and respects 10-minute cutoff', () => {
   // Empty sheet (or only header row) returns -1
-  assert.strictEqual(findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Need an app'), -1);
+  assert.strictEqual(findRecentDuplicateRow(mockSheet, { rawName: 'Alice', rawEmail: 'alice@example.com', rawType: 'Mobile', rawDetails: 'Need an app' }), -1);
 
   // Setup sheet with rows
   const now = Date.now();
@@ -196,15 +198,15 @@ test('findRecentDuplicateRow identifies matching recent submissions and respects
   ];
 
   // Exact match within 10 minutes returns row index (row 3, 1-indexed)
-  const matchIndex = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Need an app');
+  const matchIndex = findRecentDuplicateRow(mockSheet, { rawName: 'Alice', rawEmail: 'alice@example.com', rawType: 'Mobile', rawDetails: 'Need an app' });
   assert.strictEqual(matchIndex, 3);
 
   // Match exists but is older than 10 minutes -> returns -1
-  const expiredIndex = findRecentDuplicateRow(mockSheet, 'Old User', 'old@example.com', 'Web', 'Old request');
+  const expiredIndex = findRecentDuplicateRow(mockSheet, { rawName: 'Old User', rawEmail: 'old@example.com', rawType: 'Web', rawDetails: 'Old request' });
   assert.strictEqual(expiredIndex, -1);
 
   // Non-matching field returns -1
-  const differentDetails = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Different detail');
+  const differentDetails = findRecentDuplicateRow(mockSheet, { rawName: 'Alice', rawEmail: 'alice@example.com', rawType: 'Mobile', rawDetails: 'Different detail' });
   assert.strictEqual(differentDetails, -1);
 });
 

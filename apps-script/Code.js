@@ -1,10 +1,13 @@
 const sheetName = 'Sheet1';
 
+const FORMULA_PREFIX_REGEX = /^\s*[=+\-@\t\r%|]/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 /**
  * Escapes characters that trigger formula execution in spreadsheet software.
  */
 function escapeFormula(val) {
-  if (typeof val === 'string' && /^[=+\-@\t\r%|]/.test(val)) {
+  if (typeof val === 'string' && FORMULA_PREFIX_REGEX.test(val)) {
     return "'" + val;
   }
   return val;
@@ -28,7 +31,7 @@ function validateInputs(parameter) {
   }
 
   const email = rawEmail.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!EMAIL_REGEX.test(email)) {
     throw new Error("Invalid email address.");
   }
 
@@ -75,9 +78,14 @@ function enforceRateLimits(cache, email, nowMs) {
 /**
  * Scans recent rows to check for duplicate submission within 10 minutes.
  */
-function findRecentDuplicateRow(sheet, rawName, rawEmail, rawType, rawDetails, optionalLastRow) {
+function findRecentDuplicateRow(sheet, rawInputs, optionalLastRow) {
   const lastRow = optionalLastRow !== undefined ? optionalLastRow : sheet.getLastRow();
   if (lastRow <= 1) return -1;
+
+  const rawName = rawInputs ? (rawInputs.rawName !== undefined ? rawInputs.rawName : rawInputs.name || '') : '';
+  const rawEmail = rawInputs ? (rawInputs.rawEmail !== undefined ? rawInputs.rawEmail : rawInputs.email || '') : '';
+  const rawType = rawInputs ? (rawInputs.rawType !== undefined ? rawInputs.rawType : rawInputs.projectType || '') : '';
+  const rawDetails = rawInputs ? (rawInputs.rawDetails !== undefined ? rawInputs.rawDetails : rawInputs.details || '') : '';
 
   // Scan only the most recent rows (up to 25) instead of the entire sheet
   const rowsToScan = Math.min(25, lastRow - 1);
@@ -129,7 +137,7 @@ function doPost(e) {
       }
 
       // Check for recent duplicate to handle retries gracefully
-      rowIndex = findRecentDuplicateRow(sheet, validated.rawName, validated.rawEmail, validated.rawType, validated.rawDetails, lastRow);
+      rowIndex = findRecentDuplicateRow(sheet, validated, lastRow);
 
       const timestamp = new Date();
 

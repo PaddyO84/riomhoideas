@@ -1,7 +1,19 @@
 import os
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import List, Tuple, Optional
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
+@lru_cache(maxsize=32)
+def get_cached_image(path: str) -> Image.Image:
+    return Image.open(path).convert("RGBA")
+
+@lru_cache(maxsize=32)
+def load_font(font_name: str, size: int):
+    try:
+        return ImageFont.truetype(font_name, size)
+    except Exception:
+        return ImageFont.load_default()
 
 @dataclass
 class GraphicConfig:
@@ -72,7 +84,7 @@ def render_logo_badge(img: Image.Image, logo_path: str, x: int, y: int, size: in
         return img
 
     width, height = img.size
-    logo = Image.open(logo_path).convert("RGBA")
+    logo = get_cached_image(logo_path)
     logo = logo.resize((size, size), Image.Resampling.LANCZOS)
 
     badge_rect = [
@@ -110,7 +122,7 @@ def render_phone_screenshot(img: Image.Image, screenshot_path: str, chassis_x: i
         return img
 
     width, height = img.size
-    ss = Image.open(screenshot_path).convert("RGBA")
+    ss = get_cached_image(screenshot_path)
     ss_resized = ss.resize((ph_w, int(ph_w * (ss.height / ss.width))), Image.Resampling.LANCZOS)
 
     # Drop shadow
