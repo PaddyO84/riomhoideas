@@ -1,11 +1,12 @@
 import os
-from PIL import ImageDraw, ImageFont
+from PIL import ImageDraw
 from graphic_utils import (
     GraphicConfig,
     create_gradient_background,
     add_ambient_glows,
     render_logo_badge,
-    render_phone_screenshot
+    render_phone_screenshot,
+    load_font
 )
 
 def create_developer_header_graphic(config: GraphicConfig):
@@ -54,18 +55,11 @@ def create_developer_header_graphic(config: GraphicConfig):
     draw = ImageDraw.Draw(img)
 
     # 5. High-Resolution Typography
-    try:
-        font_brand = ImageFont.truetype("arialbd.ttf", 145)
-        font_tag = ImageFont.truetype("arialbd.ttf", 100)
-        font_sub = ImageFont.truetype("arial.ttf", 64)
-        font_pill = ImageFont.truetype("courbd.ttf", 46)
-        font_stat = ImageFont.truetype("arialbd.ttf", 52)
-    except Exception:
-        font_brand = ImageFont.load_default()
-        font_tag = ImageFont.load_default()
-        font_sub = ImageFont.load_default()
-        font_pill = ImageFont.load_default()
-        font_stat = ImageFont.load_default()
+    font_brand = load_font("arialbd.ttf", 145)
+    font_tag = load_font("arialbd.ttf", 100)
+    font_sub = load_font("arial.ttf", 64)
+    font_pill = load_font("courbd.ttf", 46)
+    font_stat = load_font("arialbd.ttf", 52)
 
     # Studio Pill
     pill_x = 1050
