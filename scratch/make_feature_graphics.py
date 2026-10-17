@@ -1,3 +1,4 @@
+import functools
 import os
 from PIL import ImageDraw, ImageFont
 from graphic_utils import (
@@ -7,6 +8,13 @@ from graphic_utils import (
     render_logo_badge,
     render_phone_screenshot
 )
+
+@functools.lru_cache(maxsize=32)
+def get_font(font_name: str, size: int):
+    try:
+        return ImageFont.truetype(font_name, size)
+    except Exception:
+        return ImageFont.load_default()
 
 def create_feature_graphic(config: GraphicConfig):
     width = config.width
@@ -54,18 +62,11 @@ def create_feature_graphic(config: GraphicConfig):
     draw = ImageDraw.Draw(img)
 
     # 5. Typography via System Font
-    try:
-        font_brand = ImageFont.truetype("arialbd.ttf", 36)
-        font_tag = ImageFont.truetype("arialbd.ttf", 26)
-        font_sub = ImageFont.truetype("arial.ttf", 16)
-        font_pill = ImageFont.truetype("courbd.ttf", 12)
-        font_stat = ImageFont.truetype("arialbd.ttf", 13)
-    except Exception:
-        font_brand = ImageFont.load_default()
-        font_tag = ImageFont.load_default()
-        font_sub = ImageFont.load_default()
-        font_pill = ImageFont.load_default()
-        font_stat = ImageFont.load_default()
+    font_brand = get_font("arialbd.ttf", 36)
+    font_tag = get_font("arialbd.ttf", 26)
+    font_sub = get_font("arial.ttf", 16)
+    font_pill = get_font("courbd.ttf", 12)
+    font_stat = get_font("arialbd.ttf", 13)
 
     # Studio Pill
     pill_x = 260

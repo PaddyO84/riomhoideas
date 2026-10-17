@@ -1,7 +1,16 @@
+import functools
 import os
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter
+
+
+@functools.lru_cache(maxsize=32)
+def load_image(image_path: str) -> Image.Image:
+    """
+    Loads and caches RGBA PIL images in memory to prevent repeated disk I/O.
+    """
+    return Image.open(image_path).convert("RGBA")
 
 @dataclass
 class GraphicConfig:
@@ -72,7 +81,7 @@ def render_logo_badge(img: Image.Image, logo_path: str, x: int, y: int, size: in
         return img
 
     width, height = img.size
-    logo = Image.open(logo_path).convert("RGBA")
+    logo = load_image(logo_path).copy()
     logo = logo.resize((size, size), Image.Resampling.LANCZOS)
 
     badge_rect = [
@@ -110,7 +119,7 @@ def render_phone_screenshot(img: Image.Image, screenshot_path: str, chassis_x: i
         return img
 
     width, height = img.size
-    ss = Image.open(screenshot_path).convert("RGBA")
+    ss = load_image(screenshot_path).copy()
     ss_resized = ss.resize((ph_w, int(ph_w * (ss.height / ss.width))), Image.Resampling.LANCZOS)
 
     # Drop shadow

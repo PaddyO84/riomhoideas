@@ -80,6 +80,9 @@ test.beforeEach(() => {
 
 test('Formula Escaping Helper covers Excel/CSV injection triggers', () => {
   assert.strictEqual(escapeFormula('=SUM(1,2)'), "'=SUM(1,2)");
+  assert.strictEqual(escapeFormula(' =SUM(1,2)'), "' =SUM(1,2)");
+  assert.strictEqual(escapeFormula('   +cmd|'), "'   +cmd|");
+  assert.strictEqual(escapeFormula('\t=1+1'), "'\t=1+1");
   assert.strictEqual(escapeFormula('+cmd|'), "'+cmd|");
   assert.strictEqual(escapeFormula('-cmd'), "'-cmd");
   assert.strictEqual(escapeFormula('@test'), "'@test");
@@ -206,6 +209,23 @@ test('findRecentDuplicateRow identifies matching recent submissions and respects
   // Non-matching field returns -1
   const differentDetails = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Different detail');
   assert.strictEqual(differentDetails, -1);
+
+  // Object parameter passing works identically
+  const objectMatchIndex = findRecentDuplicateRow(mockSheet, {
+    rawName: 'Alice',
+    rawEmail: 'alice@example.com',
+    rawType: 'Mobile',
+    rawDetails: 'Need an app'
+  });
+  assert.strictEqual(objectMatchIndex, 3);
+
+  const objectNameMatchIndex = findRecentDuplicateRow(mockSheet, {
+    name: 'Alice',
+    email: 'alice@example.com',
+    projectType: 'Mobile',
+    details: 'Need an app'
+  });
+  assert.strictEqual(objectNameMatchIndex, 3);
 });
 
 test('doPost handles duplicate submissions by updating existing row without appending a new row', () => {

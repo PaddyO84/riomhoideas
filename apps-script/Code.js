@@ -1,10 +1,12 @@
 const sheetName = 'Sheet1';
+const FORMULA_INJECTION_REGEX = /^\s*[=+\-@\t\r%|]/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * Escapes characters that trigger formula execution in spreadsheet software.
  */
 function escapeFormula(val) {
-  if (typeof val === 'string' && /^[=+\-@\t\r%|]/.test(val)) {
+  if (typeof val === 'string' && FORMULA_INJECTION_REGEX.test(val)) {
     return "'" + val;
   }
   return val;
@@ -28,7 +30,7 @@ function validateInputs(parameter) {
   }
 
   const email = rawEmail.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!EMAIL_REGEX.test(email)) {
     throw new Error("Invalid email address.");
   }
 
@@ -74,9 +76,24 @@ function enforceRateLimits(cache, email, nowMs) {
 
 /**
  * Scans recent rows to check for duplicate submission within 10 minutes.
+ * Accepts either a submission data object or individual field parameters.
  */
-function findRecentDuplicateRow(sheet, rawName, rawEmail, rawType, rawDetails, optionalLastRow) {
-  const lastRow = optionalLastRow !== undefined ? optionalLastRow : sheet.getLastRow();
+function findRecentDuplicateRow(sheet, rawNameOrData, rawEmail, rawType, rawDetails, optionalLastRow) {
+  let rawName = rawNameOrData;
+  let email = rawEmail;
+  let type = rawType;
+  let details = rawDetails;
+  let actualLastRow = optionalLastRow;
+
+  if (rawNameOrData && typeof rawNameOrData === 'object') {
+    rawName = rawNameOrData.rawName || rawNameOrData.name || '';
+    email = rawNameOrData.rawEmail || rawNameOrData.email || '';
+    type = rawNameOrData.rawType || rawNameOrData.projectType || '';
+    details = rawNameOrData.rawDetails || rawNameOrData.details || '';
+    actualLastRow = typeof rawEmail === 'number' ? rawEmail : optionalLastRow;
+  }
+
+  const lastRow = actualLastRow !== undefined ? actualLastRow : sheet.getLastRow();
   if (lastRow <= 1) return -1;
 
   // Scan only the most recent rows (up to 25) instead of the entire sheet
@@ -94,7 +111,7 @@ function findRecentDuplicateRow(sheet, rawName, rawEmail, rawType, rawDetails, o
       break;
     }
 
-    if (String(row[1]) === rawName && String(row[2]) === rawEmail && String(row[3]) === rawType && String(row[4]) === rawDetails) {
+    if (String(row[1]) === rawName && String(row[2]) === email && String(row[3]) === type && String(row[4]) === details) {
       return startRow + i;
     }
   }
@@ -129,7 +146,7 @@ function doPost(e) {
       }
 
       // Check for recent duplicate to handle retries gracefully
-      rowIndex = findRecentDuplicateRow(sheet, validated.rawName, validated.rawEmail, validated.rawType, validated.rawDetails, lastRow);
+      rowIndex = findRecentDuplicateRow(sheet, validated, lastRow);
 
       const timestamp = new Date();
 
