@@ -1,20 +1,13 @@
-import functools
 import os
-from PIL import ImageDraw, ImageFont
+from PIL import ImageDraw
 from graphic_utils import (
     GraphicConfig,
     create_gradient_background,
     add_ambient_glows,
     render_logo_badge,
-    render_phone_screenshot
+    render_phone_screenshot,
+    load_font
 )
-
-@functools.lru_cache(maxsize=32)
-def get_font(font_name: str, size: int):
-    try:
-        return ImageFont.truetype(font_name, size)
-    except Exception:
-        return ImageFont.load_default()
 
 def create_developer_header_graphic(config: GraphicConfig):
     width = config.width
@@ -62,11 +55,11 @@ def create_developer_header_graphic(config: GraphicConfig):
     draw = ImageDraw.Draw(img)
 
     # 5. High-Resolution Typography
-    font_brand = get_font("arialbd.ttf", 145)
-    font_tag = get_font("arialbd.ttf", 100)
-    font_sub = get_font("arial.ttf", 64)
-    font_pill = get_font("courbd.ttf", 46)
-    font_stat = get_font("arialbd.ttf", 52)
+    font_brand = load_font("arialbd.ttf", 145)
+    font_tag = load_font("arialbd.ttf", 100)
+    font_sub = load_font("arial.ttf", 64)
+    font_pill = load_font("courbd.ttf", 46)
+    font_stat = load_font("arialbd.ttf", 52)
 
     # Studio Pill
     pill_x = 1050

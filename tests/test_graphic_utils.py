@@ -14,7 +14,8 @@ from graphic_utils import (
     create_gradient_background,
     render_logo_badge,
     render_phone_screenshot,
-    load_image
+    load_image,
+    load_font
 )
 
 
@@ -105,6 +106,14 @@ class TestGraphicUtils(unittest.TestCase):
         first_loaded = load_image(img_path)
         second_loaded = load_image(img_path)
         self.assertIs(first_loaded, second_loaded)
+
+    def test_load_font_caching_and_fallback(self):
+        """Verifies that load_font returns a font, caches it, and safely falls back on non-existent fonts."""
+        fallback_font = load_font("non_existent_font_12345.ttf", 24)
+        self.assertIsNotNone(fallback_font)
+
+        second_load = load_font("non_existent_font_12345.ttf", 24)
+        self.assertIs(fallback_font, second_load)
 
 
 if __name__ == '__main__':

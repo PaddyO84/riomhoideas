@@ -2,7 +2,7 @@ import functools
 import os
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 
 @functools.lru_cache(maxsize=32)
@@ -11,6 +11,17 @@ def load_image(image_path: str) -> Image.Image:
     Loads and caches RGBA PIL images in memory to prevent repeated disk I/O.
     """
     return Image.open(image_path).convert("RGBA")
+
+
+@functools.lru_cache(maxsize=32)
+def load_font(font_name: str, size: int):
+    """
+    Loads and caches TrueType fonts with automatic fallback to system default font.
+    """
+    try:
+        return ImageFont.truetype(font_name, size)
+    except Exception:
+        return ImageFont.load_default()
 
 @dataclass
 class GraphicConfig:
