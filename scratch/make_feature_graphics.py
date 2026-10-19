@@ -6,7 +6,9 @@ from graphic_utils import (
     add_ambient_glows,
     render_logo_badge,
     render_phone_screenshot,
-    load_font
+    load_font,
+    render_studio_pill,
+    render_trust_badges
 )
 
 def create_feature_graphic(config: GraphicConfig):
@@ -62,11 +64,20 @@ def create_feature_graphic(config: GraphicConfig):
     font_stat = load_font("arialbd.ttf", 13)
 
     # Studio Pill
-    pill_x = 260
-    pill_y = 65
-    draw.rounded_rectangle([pill_x, pill_y, pill_x + 360, pill_y + 28], radius=14, fill=(15, 23, 42, 220), outline=(51, 65, 85, 200), width=1)
-    draw.ellipse([pill_x + 12, pill_y + 10, pill_x + 20, pill_y + 18], fill=(100, 255, 218, 255))
-    draw.text((pill_x + 28, pill_y + 6), "RIOMHOIDEAS SOFTWARE LAB", fill=(100, 255, 218, 255), font=font_pill)
+    render_studio_pill(
+        draw=draw,
+        pill_x=260,
+        pill_y=65,
+        pill_w=360,
+        pill_h=28,
+        radius=14,
+        font=font_pill,
+        dot_offset_x=12,
+        dot_size=8,
+        text_offset_x=28,
+        text_offset_y=6,
+        border_width=1
+    )
 
     # App Title / Brand
     draw.text((260, 105), config.app_name.upper(), fill=(255, 255, 255, 255), font=font_brand)
@@ -78,14 +89,19 @@ def create_feature_graphic(config: GraphicConfig):
     draw.text((70, 260), config.subtag, fill=(203, 213, 225, 255), font=font_sub)
 
     # Stat / Trust Badges at bottom
-    start_x = 70
-    stat_y = 410
-    for b in config.badges:
-        text_bbox = draw.textbbox((0, 0), b, font=font_stat)
-        bw = text_bbox[2] - text_bbox[0] + 24
-        draw.rounded_rectangle([start_x, stat_y, start_x + bw, stat_y + 32], radius=8, fill=(15, 23, 42, 200), outline=(51, 65, 85, 180), width=1)
-        draw.text((start_x + 12, stat_y + 7), b, fill=(148, 163, 184, 255), font=font_stat)
-        start_x += bw + 12
+    render_trust_badges(
+        draw=draw,
+        badges=config.badges,
+        start_x=70,
+        stat_y=410,
+        font=font_stat,
+        pad_x=12,
+        pad_y=7,
+        height=32,
+        radius=8,
+        gap=12,
+        border_width=1
+    )
 
     # Save output
     img.convert("RGB").save(config.output_path, "PNG", quality=95)

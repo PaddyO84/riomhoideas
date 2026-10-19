@@ -2,7 +2,7 @@ import os
 import sys
 import unittest
 import tempfile
-from PIL import Image
+from PIL import Image, ImageDraw
 
 # Add scratch directory to sys.path
 scratch_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'scratch'))
@@ -12,10 +12,13 @@ if scratch_dir not in sys.path:
 from graphic_utils import (
     GraphicConfig,
     create_gradient_background,
+    add_ambient_glows,
     render_logo_badge,
     render_phone_screenshot,
     load_image,
-    load_font
+    load_font,
+    render_studio_pill,
+    render_trust_badges
 )
 
 
@@ -115,6 +118,82 @@ class TestGraphicUtils(unittest.TestCase):
         second_load = load_font("non_existent_font_12345.ttf", 24)
         self.assertIs(fallback_font, second_load)
 
+    def test_load_image_missing_file_raises_error(self):
+        """Verifies that load_image raises FileNotFoundError when given a non-existent path (Suggestion 8575532665481217047)."""
+        missing_path = os.path.join(self.temp_dir.name, "does_not_exist_123.png")
+        with self.assertRaises((FileNotFoundError, OSError)):
+            load_image(missing_path)
+
+    def test_add_ambient_glows_default_and_custom(self):
+        """Verifies add_ambient_glows composites glowing layers onto the canvas (Suggestion 8575532665481219006)."""
+        # Default glows
+        result_default = add_ambient_glows(self.test_img, width=200, height=100)
+        self.assertEqual(result_default.size, (200, 100))
+        self.assertEqual(result_default.mode, "RGBA")
+
+        # Custom glows and downscale factor
+        custom_glows = [
+            ((0, 0, 50, 50), (255, 100, 50, 50))
+        ]
+        result_custom = add_ambient_glows(
+            self.test_img,
+            width=200,
+            height=100,
+            blur_radius=10,
+            glows=custom_glows,
+            downscale_factor=2
+        )
+        self.assertEqual(result_custom.size, (200, 100))
+        self.assertEqual(result_custom.mode, "RGBA")
+
+    def test_render_logo_badge_success_path(self):
+        """Verifies render_logo_badge successfully composites a logo when file exists (Suggestion 8575532665481217225)."""
+        logo_path = os.path.join(self.temp_dir.name, "valid_logo.png")
+        dummy_logo = Image.new("RGBA", (100, 100), (255, 255, 0, 255))
+        dummy_logo.save(logo_path)
+
+        result = render_logo_badge(
+            img=self.test_img.copy(),
+            logo_path=logo_path,
+            x=20,
+            y=20,
+            size=40,
+            badge_radius=10,
+            badge_pad=4,
+            border_width=2
+        )
+        self.assertEqual(result.size, self.test_img.size)
+        self.assertEqual(result.mode, "RGBA")
+        self.assertNotEqual(result.tobytes(), self.test_img.tobytes())
+
+    def test_render_studio_pill_and_trust_badges(self):
+        """Verifies render_studio_pill and render_trust_badges render elements onto a canvas."""
+        canvas = self.test_img.copy()
+        draw = ImageDraw.Draw(canvas)
+        font = load_font("arial.ttf", 12)
+
+        # Test render_studio_pill
+        render_studio_pill(
+            draw=draw,
+            pill_x=10,
+            pill_y=10,
+            pill_w=100,
+            pill_h=20,
+            radius=8,
+            font=font
+        )
+
+        # Test render_trust_badges
+        render_trust_badges(
+            draw=draw,
+            badges=["Badge 1", "Badge 2"],
+            start_x=10,
+            stat_y=40,
+            font=font
+        )
+        self.assertNotEqual(canvas.tobytes(), self.test_img.tobytes())
+
 
 if __name__ == '__main__':
     unittest.main()
+

@@ -64,23 +64,50 @@ def create_gradient_background(width: int, height: int, top_color: Tuple[int, in
     return gradient_1d.resize((width, height), Image.Resampling.NEAREST)
 
 
-def add_ambient_glows(img: Image.Image, width: int, height: int, blur_radius: int = 60, glows: Optional[List[Tuple[Tuple[int, int, int, int], Tuple[int, int, int, int]]]] = None) -> Image.Image:
+def add_ambient_glows(
+    img: Image.Image,
+    width: int,
+    height: int,
+    blur_radius: int = 60,
+    glows: Optional[List[Tuple[Tuple[int, int, int, int], Tuple[int, int, int, int]]]] = None,
+    downscale_factor: int = 4
+) -> Image.Image:
     """
     Applies atmospheric glowing radial orbs onto the canvas.
+    Uses downscale-blur-upscale optimization to eliminate CPU bottlenecks on high-res canvases.
     """
-    glow_layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    glow_draw = ImageDraw.Draw(glow_layer)
-
     if glows is None:
         glows = [
             ((-100, -50, 450, 500), (100, 255, 218, 40)),
             ((650, 50, 1150, 550), (0, 229, 255, 30))
         ]
 
-    for bbox, fill in glows:
-        glow_draw.ellipse(bbox, fill=fill)
+    # Use downscale optimization if canvas is sufficiently large
+    ds = max(1, downscale_factor) if min(width, height) >= 128 else 1
+    ds_w = max(1, width // ds)
+    ds_h = max(1, height // ds)
 
-    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=blur_radius))
+    glow_layer = Image.new("RGBA", (ds_w, ds_h), (0, 0, 0, 0))
+    glow_draw = ImageDraw.Draw(glow_layer)
+
+    for bbox, fill in glows:
+        if ds > 1:
+            scaled_bbox = (
+                int(bbox[0] / ds),
+                int(bbox[1] / ds),
+                int(bbox[2] / ds),
+                int(bbox[3] / ds)
+            )
+        else:
+            scaled_bbox = bbox
+        glow_draw.ellipse(scaled_bbox, fill=fill)
+
+    scaled_blur = max(1, int(blur_radius / ds))
+    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=scaled_blur))
+
+    if ds > 1:
+        glow_layer = glow_layer.resize((width, height), Image.Resampling.BILINEAR)
+
     return Image.alpha_composite(img, glow_layer)
 
 
@@ -155,3 +182,73 @@ def render_phone_screenshot(img: Image.Image, screenshot_path: str, chassis_x: i
     img.paste(ss_cropped, (chassis_x, chassis_y), ss_mask)
 
     return img
+
+
+def render_studio_pill(
+    draw: ImageDraw.ImageDraw,
+    pill_x: int,
+    pill_y: int,
+    pill_w: int,
+    pill_h: int,
+    radius: int,
+    font: ImageFont.ImageFont,
+    text: str = "RIOMHOIDEAS SOFTWARE LAB",
+    dot_offset_x: int = 12,
+    dot_size: int = 8,
+    text_offset_x: int = 28,
+    text_offset_y: int = 6,
+    border_width: int = 1
+):
+    """
+    Renders the Riomhoideas Software Lab studio pill badge with glowing indicator dot.
+    """
+    draw.rounded_rectangle(
+        [pill_x, pill_y, pill_x + pill_w, pill_y + pill_h],
+        radius=radius,
+        fill=(15, 23, 42, 220),
+        outline=(51, 65, 85, 200),
+        width=border_width
+    )
+    dot_top = pill_y + (pill_h - dot_size) // 2
+    draw.ellipse(
+        [pill_x + dot_offset_x, dot_top, pill_x + dot_offset_x + dot_size, dot_top + dot_size],
+        fill=(100, 255, 218, 255)
+    )
+    draw.text(
+        (pill_x + text_offset_x, pill_y + text_offset_y),
+        text,
+        fill=(100, 255, 218, 255),
+        font=font
+    )
+
+
+def render_trust_badges(
+    draw: ImageDraw.ImageDraw,
+    badges: List[str],
+    start_x: int,
+    stat_y: int,
+    font: ImageFont.ImageFont,
+    pad_x: int = 12,
+    pad_y: int = 7,
+    height: int = 32,
+    radius: int = 8,
+    gap: int = 12,
+    border_width: int = 1
+):
+    """
+    Renders rounded stat/trust badges with calculated bounding boxes across a horizontal line.
+    """
+    cur_x = start_x
+    for b in badges:
+        text_bbox = draw.textbbox((0, 0), b, font=font)
+        text_w = text_bbox[2] - text_bbox[0]
+        bw = text_w + (pad_x * 2)
+        draw.rounded_rectangle(
+            [cur_x, stat_y, cur_x + bw, stat_y + height],
+            radius=radius,
+            fill=(15, 23, 42, 200),
+            outline=(51, 65, 85, 180),
+            width=border_width
+        )
+        draw.text((cur_x + pad_x, stat_y + pad_y), b, fill=(148, 163, 184, 255), font=font)
+        cur_x += bw + gap

@@ -51,8 +51,8 @@ function validateInputs(parameter) {
  * Checks and updates rate limits using CacheService batch operations.
  * Enforces per-email hourly limit, global hourly limit, and global per-minute velocity limit.
  */
-function enforceRateLimits(cache, email, nowMs) {
-  const currentNow = nowMs || new Date().getTime();
+function enforceRateLimits(cache, email) {
+  const currentNow = new Date().getTime();
   const minuteBucket = Math.floor(currentNow / 60000);
   const minuteCacheKey = 'rate_limit_min_' + minuteBucket;
   const emailCacheKey = 'rate_limit_' + email;
@@ -76,24 +76,15 @@ function enforceRateLimits(cache, email, nowMs) {
 
 /**
  * Scans recent rows to check for duplicate submission within 10 minutes.
- * Accepts either a submission data object or individual field parameters.
+ * Accepts a submission data object and optional lastRow index.
  */
-function findRecentDuplicateRow(sheet, rawNameOrData, rawEmail, rawType, rawDetails, optionalLastRow) {
-  let rawName = rawNameOrData;
-  let email = rawEmail;
-  let type = rawType;
-  let details = rawDetails;
-  let actualLastRow = optionalLastRow;
+function findRecentDuplicateRow(sheet, data, optionalLastRow) {
+  const rawName = (data && (data.rawName || data.name)) || '';
+  const email = (data && (data.rawEmail || data.email)) || '';
+  const type = (data && (data.rawType || data.projectType)) || '';
+  const details = (data && (data.rawDetails || data.details)) || '';
 
-  if (rawNameOrData && typeof rawNameOrData === 'object') {
-    rawName = rawNameOrData.rawName || rawNameOrData.name || '';
-    email = rawNameOrData.rawEmail || rawNameOrData.email || '';
-    type = rawNameOrData.rawType || rawNameOrData.projectType || '';
-    details = rawNameOrData.rawDetails || rawNameOrData.details || '';
-    actualLastRow = typeof rawEmail === 'number' ? rawEmail : optionalLastRow;
-  }
-
-  const lastRow = actualLastRow !== undefined ? actualLastRow : sheet.getLastRow();
+  const lastRow = optionalLastRow !== undefined ? optionalLastRow : sheet.getLastRow();
   if (lastRow <= 1) return -1;
 
   // Scan only the most recent rows (up to 25) instead of the entire sheet
@@ -162,8 +153,14 @@ function doPost(e) {
         lastRow++;
         rowIndex = lastRow;
       } else {
-        sheet.getRange(rowIndex, 1).setValue(timestamp);
-        sheet.getRange(rowIndex, 6).setValue('Pending');
+        sheet.getRange(rowIndex, 1, 1, 6).setValues([[
+          timestamp,
+          validated.name,
+          validated.escapedEmail,
+          validated.projectType,
+          validated.details,
+          'Pending'
+        ]]);
       }
 
       // Send the email notification
@@ -193,7 +190,7 @@ Submitted at: ${timestamp}
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
-    console.error("Error in doPost:", error, error.stack);
+    console.error("Error in doPost:", error && error.message ? error.message : String(error));
     return ContentService
       .createTextOutput(JSON.stringify({ 'result': 'error', 'error': 'An internal server error occurred.' }))
       .setMimeType(ContentService.MimeType.JSON);
