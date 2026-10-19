@@ -12,6 +12,7 @@ if scratch_dir not in sys.path:
 from graphic_utils import (
     GraphicConfig,
     create_gradient_background,
+    add_ambient_glows,
     render_logo_badge,
     render_phone_screenshot,
     load_image,
@@ -107,13 +108,47 @@ class TestGraphicUtils(unittest.TestCase):
         second_loaded = load_image(img_path)
         self.assertIs(first_loaded, second_loaded)
 
+    def test_load_image_missing_file_raises_error(self):
+        """Item 1: Verifies load_image raises FileNotFoundError when given a non-existent file path."""
+        non_existent = os.path.join(self.temp_dir.name, "does_not_exist.png")
+        with self.assertRaises((FileNotFoundError, OSError)):
+            load_image(non_existent)
+
+    def test_add_ambient_glows(self):
+        """Item 2: Verifies add_ambient_glows composites glowing orbs onto image without changing canvas dimensions."""
+        base_img = Image.new("RGBA", (400, 300), (10, 20, 30, 255))
+        result = add_ambient_glows(base_img, 400, 300, blur_radius=20)
+        self.assertEqual(result.size, (400, 300))
+        self.assertEqual(result.mode, "RGBA")
+
     def test_load_font_caching_and_fallback(self):
-        """Verifies that load_font returns a font, caches it, and safely falls back on non-existent fonts."""
+        """Item 3: Verifies load_font returns a font, caches it, and safely falls back on non-existent fonts."""
         fallback_font = load_font("non_existent_font_12345.ttf", 24)
         self.assertIsNotNone(fallback_font)
 
         second_load = load_font("non_existent_font_12345.ttf", 24)
         self.assertIs(fallback_font, second_load)
+
+    def test_render_logo_badge_success_path(self):
+        """Item 15: Verifies render_logo_badge successfully composites logo onto canvas when logo path exists."""
+        logo_path = os.path.join(self.temp_dir.name, "valid_logo.png")
+        logo_img = Image.new("RGBA", (100, 100), (255, 0, 0, 255))
+        logo_img.save(logo_path)
+
+        base_img = Image.new("RGBA", (300, 300), (10, 20, 30, 255))
+        result = render_logo_badge(
+            img=base_img,
+            logo_path=logo_path,
+            x=20,
+            y=20,
+            size=60,
+            badge_radius=12,
+            badge_pad=8,
+            border_width=2
+        )
+        self.assertEqual(result.size, (300, 300))
+        self.assertEqual(result.mode, "RGBA")
+        self.assertIsNot(result, base_img)
 
 
 if __name__ == '__main__':

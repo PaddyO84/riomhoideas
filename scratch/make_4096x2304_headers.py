@@ -6,7 +6,10 @@ from graphic_utils import (
     add_ambient_glows,
     render_logo_badge,
     render_phone_screenshot,
-    load_font
+    render_studio_pill,
+    render_trust_badges,
+    load_font,
+    get_font
 )
 
 def create_developer_header_graphic(config: GraphicConfig):
@@ -62,13 +65,20 @@ def create_developer_header_graphic(config: GraphicConfig):
     font_stat = load_font("arialbd.ttf", 52)
 
     # Studio Pill
-    pill_x = 1050
-    pill_y = 350
-    pill_w = 1450
-    pill_h = 100
-    draw.rounded_rectangle([pill_x, pill_y, pill_x + pill_w, pill_y + pill_h], radius=50, fill=(15, 23, 42, 230), outline=(51, 65, 85, 220), width=3)
-    draw.ellipse([pill_x + 45, pill_y + 35, pill_x + 75, pill_y + 65], fill=(100, 255, 218, 255))
-    draw.text((pill_x + 105, pill_y + 22), "RIOMHOIDEAS SOFTWARE LAB", fill=(100, 255, 218, 255), font=font_pill)
+    render_studio_pill(
+        draw=draw,
+        pill_x=1050,
+        pill_y=350,
+        pill_w=1450,
+        pill_h=100,
+        font_pill=font_pill,
+        radius=50,
+        dot_rect=(1095, 385, 1125, 415),
+        text_pos=(1155, 372),
+        border_width=3,
+        fill=(15, 23, 42, 230),
+        outline=(51, 65, 85, 220)
+    )
 
     # Main Brand Name
     draw.text((1050, 490), config.app_name.upper(), fill=(255, 255, 255, 255), font=font_brand)
@@ -80,15 +90,21 @@ def create_developer_header_graphic(config: GraphicConfig):
     draw.text((280, 1140), config.subtag, fill=(203, 213, 225, 255), font=font_sub, spacing=28)
 
     # Bottom Trust Badges
-    start_x = 280
-    stat_y = 1840
-    for b in config.badges:
-        text_bbox = draw.textbbox((0, 0), b, font=font_stat)
-        bw = text_bbox[2] - text_bbox[0] + 80
-        bh = 110
-        draw.rounded_rectangle([start_x, stat_y, start_x + bw, stat_y + bh], radius=28, fill=(15, 23, 42, 220), outline=(51, 65, 85, 200), width=3)
-        draw.text((start_x + 40, stat_y + 24), b, fill=(148, 163, 184, 255), font=font_stat)
-        start_x += bw + 36
+    render_trust_badges(
+        draw=draw,
+        badges=config.badges,
+        font=font_stat,
+        start_x=280,
+        stat_y=1840,
+        text_pad_x=40,
+        text_pad_y=24,
+        badge_h=110,
+        badge_gap=36,
+        radius=28,
+        fill=(15, 23, 42, 220),
+        outline=(51, 65, 85, 200),
+        border_width=3
+    )
 
     # Save output in pristine high quality PNG
     img.convert("RGB").save(config.output_path, "PNG", quality=98)

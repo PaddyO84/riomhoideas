@@ -23,6 +23,10 @@ def load_font(font_name: str, size: int):
     except Exception:
         return ImageFont.load_default()
 
+
+# Alias for backward compatibility / script imports
+get_font = load_font
+
 @dataclass
 class GraphicConfig:
     logo_path: str
@@ -67,8 +71,13 @@ def create_gradient_background(width: int, height: int, top_color: Tuple[int, in
 def add_ambient_glows(img: Image.Image, width: int, height: int, blur_radius: int = 60, glows: Optional[List[Tuple[Tuple[int, int, int, int], Tuple[int, int, int, int]]]] = None) -> Image.Image:
     """
     Applies atmospheric glowing radial orbs onto the canvas.
+    Optimized by downscaling high-res canvases before applying Gaussian blur.
     """
-    glow_layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    scale_factor = 4 if max(width, height) >= 2000 else 1
+    small_w = max(1, width // scale_factor)
+    small_h = max(1, height // scale_factor)
+
+    glow_layer = Image.new("RGBA", (small_w, small_h), (0, 0, 0, 0))
     glow_draw = ImageDraw.Draw(glow_layer)
 
     if glows is None:
@@ -78,10 +87,82 @@ def add_ambient_glows(img: Image.Image, width: int, height: int, blur_radius: in
         ]
 
     for bbox, fill in glows:
-        glow_draw.ellipse(bbox, fill=fill)
+        if scale_factor != 1:
+            scaled_bbox = (
+                int(bbox[0] / scale_factor),
+                int(bbox[1] / scale_factor),
+                int(bbox[2] / scale_factor),
+                int(bbox[3] / scale_factor)
+            )
+        else:
+            scaled_bbox = bbox
+        glow_draw.ellipse(scaled_bbox, fill=fill)
 
-    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=blur_radius))
+    scaled_blur = max(1, blur_radius // scale_factor)
+    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=scaled_blur))
+
+    if scale_factor != 1:
+        glow_layer = glow_layer.resize((width, height), Image.Resampling.BILINEAR)
+
     return Image.alpha_composite(img, glow_layer)
+
+
+def render_studio_pill(
+    draw: ImageDraw.ImageDraw,
+    pill_x: int,
+    pill_y: int,
+    pill_w: int,
+    pill_h: int,
+    font_pill,
+    radius: int = 14,
+    dot_rect: Optional[Tuple[int, int, int, int]] = None,
+    text_pos: Optional[Tuple[int, int]] = None,
+    border_width: int = 1,
+    fill=(15, 23, 42, 220),
+    outline=(51, 65, 85, 200),
+    accent_color=(100, 255, 218, 255),
+    text: str = "RIOMHOIDEAS SOFTWARE LAB"
+):
+    """
+    Renders the 'RIOMHOIDEAS SOFTWARE LAB' pill badge onto a canvas.
+    """
+    draw.rounded_rectangle([pill_x, pill_y, pill_x + pill_w, pill_y + pill_h], radius=radius, fill=fill, outline=outline, width=border_width)
+
+    if dot_rect is None:
+        dot_rect = (pill_x + 12, pill_y + 10, pill_x + 20, pill_y + 18)
+    draw.ellipse(dot_rect, fill=accent_color)
+
+    if text_pos is None:
+        text_pos = (pill_x + 28, pill_y + 6)
+    draw.text(text_pos, text, fill=accent_color, font=font_pill)
+
+
+def render_trust_badges(
+    draw: ImageDraw.ImageDraw,
+    badges: List[str],
+    font,
+    start_x: int,
+    stat_y: int,
+    text_pad_x: int = 12,
+    text_pad_y: int = 7,
+    badge_h: int = 32,
+    badge_gap: int = 12,
+    radius: int = 8,
+    fill=(15, 23, 42, 200),
+    outline=(51, 65, 85, 180),
+    border_width: int = 1,
+    text_color=(148, 163, 184, 255)
+):
+    """
+    Renders a row of trust / stat badges at the bottom of the graphic.
+    """
+    curr_x = start_x
+    for b in badges:
+        text_bbox = draw.textbbox((0, 0), b, font=font)
+        bw = text_bbox[2] - text_bbox[0] + (text_pad_x * 2)
+        draw.rounded_rectangle([curr_x, stat_y, curr_x + bw, stat_y + badge_h], radius=radius, fill=fill, outline=outline, width=border_width)
+        draw.text((curr_x + text_pad_x, stat_y + text_pad_y), b, fill=text_color, font=font)
+        curr_x += bw + badge_gap
 
 
 def render_logo_badge(img: Image.Image, logo_path: str, x: int, y: int, size: int, badge_radius: int, badge_pad: int, border_width: int = 2) -> Image.Image:

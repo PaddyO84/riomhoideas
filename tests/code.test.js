@@ -36,6 +36,14 @@ const mockSheet = {
     setValue: (val) => {
       if (rows[row - 1]) rows[row - 1][col - 1] = val;
     },
+    setValues: (matrix) => {
+      if (!rows[row - 1]) return;
+      for (let r = 0; r < matrix.length; r++) {
+        for (let c = 0; c < matrix[r].length; c++) {
+          rows[row - 1 + r][col - 1 + c] = matrix[r][c];
+        }
+      }
+    },
     getValues: () => {
       const slice = rows.slice(row - 1, row - 1 + (numRows || 1));
       return slice.map(r => r.slice(col - 1, col - 1 + (numCols || 1)));
@@ -185,9 +193,23 @@ test('doPost handles and catches internal errors safely', () => {
   assert.strictEqual(parsed.error, 'An internal server error occurred.');
 });
 
+test('Item 4: doPost handles undefined or null event argument gracefully without crashing', () => {
+  const resNull = doPost(null);
+  const parsedNull = JSON.parse(resNull.text);
+  assert.strictEqual(parsedNull.result, 'error');
+  assert.strictEqual(parsedNull.error, 'An internal server error occurred.');
+
+  const resUndefined = doPost(undefined);
+  const parsedUndefined = JSON.parse(resUndefined.text);
+  assert.strictEqual(parsedUndefined.result, 'error');
+  assert.strictEqual(parsedUndefined.error, 'An internal server error occurred.');
+});
+
 test('findRecentDuplicateRow identifies matching recent submissions and respects 10-minute cutoff', () => {
+  const aliceObj = { name: 'Alice', email: 'alice@example.com', projectType: 'Mobile', details: 'Need an app' };
+
   // Empty sheet (or only header row) returns -1
-  assert.strictEqual(findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Need an app'), -1);
+  assert.strictEqual(findRecentDuplicateRow(mockSheet, aliceObj), -1);
 
   // Setup sheet with rows
   const now = Date.now();
@@ -199,18 +221,20 @@ test('findRecentDuplicateRow identifies matching recent submissions and respects
   ];
 
   // Exact match within 10 minutes returns row index (row 3, 1-indexed)
-  const matchIndex = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Need an app');
+  const matchIndex = findRecentDuplicateRow(mockSheet, aliceObj);
   assert.strictEqual(matchIndex, 3);
 
   // Match exists but is older than 10 minutes -> returns -1
-  const expiredIndex = findRecentDuplicateRow(mockSheet, 'Old User', 'old@example.com', 'Web', 'Old request');
+  const oldObj = { name: 'Old User', email: 'old@example.com', projectType: 'Web', details: 'Old request' };
+  const expiredIndex = findRecentDuplicateRow(mockSheet, oldObj);
   assert.strictEqual(expiredIndex, -1);
 
   // Non-matching field returns -1
-  const differentDetails = findRecentDuplicateRow(mockSheet, 'Alice', 'alice@example.com', 'Mobile', 'Different detail');
+  const differentObj = { name: 'Alice', email: 'alice@example.com', projectType: 'Mobile', details: 'Different detail' };
+  const differentDetails = findRecentDuplicateRow(mockSheet, differentObj);
   assert.strictEqual(differentDetails, -1);
 
-  // Object parameter passing works identically
+  // Object parameter with raw fields works identically
   const objectMatchIndex = findRecentDuplicateRow(mockSheet, {
     rawName: 'Alice',
     rawEmail: 'alice@example.com',
@@ -218,14 +242,6 @@ test('findRecentDuplicateRow identifies matching recent submissions and respects
     rawDetails: 'Need an app'
   });
   assert.strictEqual(objectMatchIndex, 3);
-
-  const objectNameMatchIndex = findRecentDuplicateRow(mockSheet, {
-    name: 'Alice',
-    email: 'alice@example.com',
-    projectType: 'Mobile',
-    details: 'Need an app'
-  });
-  assert.strictEqual(objectNameMatchIndex, 3);
 });
 
 test('doPost handles duplicate submissions by updating existing row without appending a new row', () => {
