@@ -23,6 +23,11 @@ def load_font(font_name: str, size: int):
     except Exception:
         return ImageFont.load_default()
 
+
+# Alias for backward compatibility / legacy imports
+get_font = load_font
+
+
 @dataclass
 class GraphicConfig:
     logo_path: str
